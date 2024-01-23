@@ -1,5 +1,6 @@
 package com.hostfully.bookingapi.models.entity;
 
+import com.hostfully.bookingapi.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,9 @@ public class Booking {
     @Column(name = "propertyId", updatable = false, insertable=false)
     public UUID propertyId;
 
+    public BookingStatus status;
+
     public LocalDateTime startDateTime;
+
     public LocalDateTime endDateTime;
 }

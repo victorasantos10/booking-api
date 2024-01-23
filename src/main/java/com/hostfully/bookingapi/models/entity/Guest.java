@@ -15,4 +15,7 @@ public class Guest {
     private String name;
     private LocalDate dateOfBirth;
     private String email;
+    private String phone;
+    public Integer adults;
+    public Integer children;
 }

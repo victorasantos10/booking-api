@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 @RestController
+@RequestMapping(value = "/api/bookings")
 public class BookingController {
 
     @Autowired
@@ -36,7 +37,7 @@ public class BookingController {
 //        return null;
 //    }
 //
-    @RequestMapping(method = RequestMethod.GET, value = "/api/bookings/{bookingUUID}")
+    @RequestMapping(method = RequestMethod.GET, value = "{bookingUUID}")
     public Object getBookingById(@PathVariable UUID bookingUUID){
         return bookingService.getBooking(bookingUUID);
         /*TODO:
@@ -48,15 +49,9 @@ public class BookingController {
           */
     }
 
-    @PostMapping("/api/bookings")
+    @PostMapping()
     public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody CreateBookingDTO createBookingDto){
-        try {
-            return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(createBookingDto)));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponseDTO<>(null, new ArrayList<Object>(Arrays.asList(e.getMessage()))));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList("An error occurred"))));
-        }
+        return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(createBookingDto)));
         /*TODO:
             - Managers and owners should not be able to call this
             - Validate if bookingUUID is valid, and return

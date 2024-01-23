@@ -1,4 +1,4 @@
-package com.hostfully.bookingapi.repositories;
+package com.hostfully.bookingapi.repositories.interfaces;
 
 import com.hostfully.bookingapi.models.entity.Guest;
 import org.springframework.data.repository.CrudRepository;

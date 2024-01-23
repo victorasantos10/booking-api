@@ -5,11 +5,15 @@ import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import com.hostfully.bookingapi.models.dto.booking.CreateBookingDTO;
 import com.hostfully.bookingapi.models.dto.booking.UpdateBookingDTO;
 import com.hostfully.bookingapi.services.BookingService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 @RestController
@@ -45,10 +49,14 @@ public class BookingController {
     }
 
     @PostMapping("/api/bookings")
-    public ApiResponseDTO<UUID> addBooking(@RequestBody CreateBookingDTO createBookingDto){
-
-
-        return new ApiResponseDTO<>(bookingService.createBooking(createBookingDto));
+    public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody CreateBookingDTO createBookingDto){
+        try {
+            return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(createBookingDto)));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponseDTO<>(null, new ArrayList<Object>(Arrays.asList(e.getMessage()))));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList("An error occurred"))));
+        }
         /*TODO:
             - Managers and owners should not be able to call this
             - Validate if bookingUUID is valid, and return

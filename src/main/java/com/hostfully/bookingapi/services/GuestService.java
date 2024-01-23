@@ -2,7 +2,7 @@ package com.hostfully.bookingapi.services;
 
 import com.hostfully.bookingapi.models.dto.guest.GuestDTO;
 import com.hostfully.bookingapi.models.entity.Guest;
-import com.hostfully.bookingapi.repositories.interfaces.GuestRepository;
+import com.hostfully.bookingapi.repositories.GuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

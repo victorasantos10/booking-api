@@ -12,12 +12,12 @@ public class Property {
     private UUID id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "Property")
-    @JoinColumn(name = "id")
-    private Property property;
+    @JoinTable(name = "PropertyTeamMember")
+    @JoinColumn(name = "propertyTeamMemberId")
+    private PropertyTeamMember propertyTeamMember;
 
-    @Column(name = "propertyId", updatable = false, insertable=false)
-    private UUID propertyId;
+    @Column(name = "propertyTeamMemberId", updatable = false, insertable=false)
+    private UUID propertyTeamMemberId;
 
     private String name;
     private String address;

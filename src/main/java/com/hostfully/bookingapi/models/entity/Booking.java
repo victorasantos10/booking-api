@@ -16,7 +16,7 @@ public class Booking {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "Guest")
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "guestId")
     public Guest guest;
 
     @Column(name = "guestId", updatable = false, insertable=false)
@@ -24,7 +24,7 @@ public class Booking {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "Property")
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "propertyId")
     public Property property;
 
     @Column(name = "propertyId", updatable = false, insertable=false)

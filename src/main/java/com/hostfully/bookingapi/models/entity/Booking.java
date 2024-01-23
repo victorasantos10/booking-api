@@ -1,6 +1,7 @@
 package com.hostfully.bookingapi.models.entity;
 
 import com.hostfully.bookingapi.enums.BookingStatus;
+import com.hostfully.bookingapi.models.dto.booking.BookingDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
-public class Booking {
+public class Booking extends BaseEntity {
     @Setter(AccessLevel.NONE)
     @Id
     public UUID id = UUID.randomUUID();
@@ -36,4 +37,19 @@ public class Booking {
     public LocalDateTime startDateTime;
 
     public LocalDateTime endDateTime;
+
+    public BookingDTO toDTO(){
+        BookingDTO dto = new BookingDTO();
+
+        dto.id = id;
+        dto.startDateTime = startDateTime;
+        dto.endDateTime = endDateTime;
+        dto.guestId = guestId;
+        dto.propertyId = propertyId;
+        dto.status = status;
+        dto.createdDateTime = createdDateTime;
+        dto.updatedDateTime = updatedDateTime;
+
+        return dto;
+    }
 }

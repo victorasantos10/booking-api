@@ -1,18 +1,15 @@
 package com.hostfully.bookingapi.services;
 
 import com.hostfully.bookingapi.exceptions.OverlappingDatesException;
-import com.hostfully.bookingapi.models.dto.booking.CreateBookingDTO;
+import com.hostfully.bookingapi.models.dto.booking.BookingDTO;
 import com.hostfully.bookingapi.models.entity.Booking;
 import com.hostfully.bookingapi.repositories.interfaces.BookingRepository;
 import com.hostfully.bookingapi.repositories.interfaces.GuestRepository;
 import com.hostfully.bookingapi.repositories.interfaces.PropertyRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.sql.ast.tree.expression.Over;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,15 +22,17 @@ public class BookingService {
     @Autowired
     GuestRepository guestRepository;
 
-    public Optional<Booking> getBooking(UUID bookingId){
-        return bookingRepository.findById(bookingId);
+    public BookingDTO getBooking(UUID bookingId){
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+
+        return booking.toDTO();
     }
 
     public void deleteBooking(UUID bookingId) {
         bookingRepository.deleteById(bookingId);
     }
 
-    public UUID createBooking(CreateBookingDTO dto){
+    public UUID createBooking(BookingDTO dto){
         //Checking if all derived entities exist.
         propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
         guestRepository.findById(dto.getGuestId()).orElseThrow(() -> new EntityNotFoundException("Guest not found"));

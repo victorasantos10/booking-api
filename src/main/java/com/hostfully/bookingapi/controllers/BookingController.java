@@ -1,19 +1,12 @@
 package com.hostfully.bookingapi.controllers;
 
-import com.hostfully.bookingapi.helpers.ValidationHelpers;
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
-import com.hostfully.bookingapi.models.dto.booking.CreateBookingDTO;
-import com.hostfully.bookingapi.models.dto.booking.UpdateBookingDTO;
+import com.hostfully.bookingapi.models.dto.booking.BookingDTO;
 import com.hostfully.bookingapi.services.BookingService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
 @RestController
@@ -50,7 +43,7 @@ public class BookingController {
     }
 
     @PostMapping()
-    public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody CreateBookingDTO createBookingDto){
+    public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody BookingDTO createBookingDto){
         return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(createBookingDto)));
         /*TODO:
             - Managers and owners should not be able to call this

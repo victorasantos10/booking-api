@@ -10,5 +10,4 @@ import java.util.UUID;
 
 @Repository
 public interface PropertyRepository extends CrudRepository<Property, UUID> {
-    ArrayList<Property> findByPropertyTeamMemberId(UUID teamMemberId);
 }

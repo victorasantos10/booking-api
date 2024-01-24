@@ -2,10 +2,8 @@ package com.hostfully.bookingapi.models.entity;
 
 import com.hostfully.bookingapi.models.dto.property.PropertyDTO;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 
 import java.util.UUID;
 
@@ -14,15 +12,8 @@ import java.util.UUID;
 @Entity
 public class Property extends BaseEntity {
     @Id
-    public UUID id = UUID.randomUUID();
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "PropertyTeamMember")
-    @JoinColumn(name = "propertyTeamMemberId")
-    public PropertyTeamMember propertyTeamMember;
-
-    @Column(name = "propertyTeamMemberId", updatable = false, insertable=false)
-    public UUID propertyTeamMemberId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    public UUID id;
 
     public String name;
     public String address;

@@ -12,8 +12,8 @@ public class InMemoryDatabaseConfig {
     @Bean
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.HSQL)
-                .addScript("classpath:schema.sql")
+                .setType(EmbeddedDatabaseType.H2)
+                .addScript("schema.sql")
                 .build();
     }
 }

@@ -43,33 +43,24 @@ public class BookingController {
     }
 
     @PostMapping()
-    public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody BookingDTO createBookingDto){
-        return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(createBookingDto)));
-        /*TODO:
-            - Managers and owners should not be able to call this
-            - Validate if bookingUUID is valid, and return
-                - 200 (OK) if there is a booking with that ID
-                - 404 if the bookingUUID is valid but no resource was vound
-                - (nice to have): Log activity
-          */
+    public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody BookingDTO bookingDto){
+        return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createOrUpdateBooking(bookingDto)));
     }
 
-//    @RequestMapping(method = RequestMethod.PUT)
-//    public void updateBooking(@RequestBody UpdateBookingDTO updateBookingDto) {
-//        /*TODO:
-//            - Managers and owners should not be able to call this
-//            - Validate if bookingUUID is valid, and return
-//                - 200 (OK) if there is a booking with that ID
-//                - 404 if the bookingUUID is valid but no resource was vound
-//                - (nice to have): Log activity
-//          */
-//    }
-//
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{bookingUUID}")
+    @PutMapping()
+    public ResponseEntity updateBooking(@RequestBody BookingDTO bookingDto) {
+        bookingService.createOrUpdateBooking(bookingDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{bookingUUID}")
+    public ResponseEntity cancelBooking(@PathVariable UUID bookingUUID){
+        bookingService.cancelBooking(bookingUUID);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{bookingUUID}")
     public void deleteBooking(@PathVariable UUID bookingUUID){
         bookingService.deleteBooking(bookingUUID);
     }
-
-
-
 }

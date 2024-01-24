@@ -3,6 +3,7 @@ package com.hostfully.bookingapi.services;
 import com.hostfully.bookingapi.models.dto.guest.GuestDTO;
 import com.hostfully.bookingapi.models.entity.Guest;
 import com.hostfully.bookingapi.repositories.GuestRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +16,19 @@ public class GuestService {
     @Autowired
     GuestRepository guestRepository;
 
-    public Optional<Guest> getGuestById(UUID guestId){
-        return guestRepository.findById(guestId);
+    public GuestDTO getGuestById(UUID guestId){
+        return guestRepository.findById(guestId).map(Guest::toDTO).orElseThrow(() -> new EntityNotFoundException("Guest not found"));
     }
 
-    public void updateProperty(GuestDTO dto){
+    public void updateGuest(GuestDTO dto){
         guestRepository.save(dto.toEntity());
     }
 
-    public void deleteProperty(UUID propertyId){
+    public void deleteGuest(UUID propertyId){
         guestRepository.deleteById(propertyId);
     }
 
-    public UUID createProperty(GuestDTO dto){
+    public UUID createGuest(GuestDTO dto){
         Guest savedEntity = guestRepository.save(dto.toEntity());
         return savedEntity.id;
     }

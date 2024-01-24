@@ -1,5 +1,6 @@
 package com.hostfully.bookingapi.services;
 
+import com.hostfully.bookingapi.enums.BookingStatus;
 import com.hostfully.bookingapi.exceptions.OverlappingDatesException;
 import com.hostfully.bookingapi.models.dto.booking.BookingDTO;
 import com.hostfully.bookingapi.models.entity.Booking;
@@ -32,7 +33,14 @@ public class BookingService {
         bookingRepository.deleteById(bookingId);
     }
 
-    public UUID createBooking(BookingDTO dto){
+    public void cancelBooking(UUID bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+        booking.status = BookingStatus.CANCELLED;
+
+        bookingRepository.save(booking);
+    }
+
+    public UUID createOrUpdateBooking(BookingDTO dto){
         //Checking if all derived entities exist.
         propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
         guestRepository.findById(dto.getGuestId()).orElseThrow(() -> new EntityNotFoundException("Guest not found"));
@@ -41,7 +49,7 @@ public class BookingService {
         boolean datesOverlapping = bookingRepository.areDatesOverlapping(dto.getPropertyId(), dto.getStartDateTime(), dto.getEndDateTime());
 
         if(datesOverlapping){
-            throw new OverlappingDatesException("The property is already booked at those dates. Please select another date range.");
+            throw new OverlappingDatesException("The property isn't available at those dates. Please select another date range.");
         }
 
 

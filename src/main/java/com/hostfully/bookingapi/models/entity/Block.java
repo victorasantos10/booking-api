@@ -1,6 +1,6 @@
 package com.hostfully.bookingapi.models.entity;
 
-import com.hostfully.bookingapi.enums.BookingStatus;
+import com.hostfully.bookingapi.models.dto.block.BlockDTO;
 import com.hostfully.bookingapi.models.dto.booking.BookingDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,17 +12,9 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
-public class Booking extends BaseEntity {
+public class Block extends BaseEntity {
     @Id
     public UUID id = UUID.randomUUID();
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "Guest")
-    @JoinColumn(name = "guestId")
-    public Guest guest;
-
-    @Column(name = "guestId", updatable = false, insertable=false)
-    public UUID guestId;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "Property")
@@ -32,24 +24,24 @@ public class Booking extends BaseEntity {
     @Column(name = "propertyId", updatable = false, insertable=false)
     public UUID propertyId;
 
-    public BookingStatus status;
-
     public LocalDateTime startDateTime;
+
+    public String reason;
 
     public LocalDateTime endDateTime;
 
-    public BookingDTO toDTO(){
-        BookingDTO dto = new BookingDTO();
+    public BlockDTO toDTO(){
+        BlockDTO dto = new BlockDTO();
 
         dto.id = id;
-        dto.startDateTime = startDateTime;
-        dto.endDateTime = endDateTime;
-        dto.guestId = guestId;
         dto.propertyId = propertyId;
-        dto.status = status;
+        dto.startDateTime = startDateTime;
+        dto.reason = reason;
+        dto.endDateTime = endDateTime;
         dto.createdDateTime = createdDateTime;
         dto.updatedDateTime = updatedDateTime;
 
         return dto;
     }
+
 }

@@ -1,5 +1,8 @@
-package com.hostfully.bookingapi.exceptions;
+package com.hostfully.bookingapi.handlers;
 
+import com.hostfully.bookingapi.exceptions.ExistingBlockException;
+import com.hostfully.bookingapi.exceptions.ExistingBookingException;
+import com.hostfully.bookingapi.exceptions.OverlappingDatesException;
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;

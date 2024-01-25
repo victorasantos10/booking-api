@@ -3,6 +3,7 @@ package com.hostfully.bookingapi.controllers;
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import com.hostfully.bookingapi.models.dto.BookingDTO;
 import com.hostfully.bookingapi.services.BookingService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class BookingController {
     }
 
     @PostMapping()
-    public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody BookingDTO bookingDto){
+    public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody @Valid BookingDTO bookingDto){
         return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(bookingDto)));
     }
 

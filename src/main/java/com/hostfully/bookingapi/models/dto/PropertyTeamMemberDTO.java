@@ -4,6 +4,8 @@ import com.hostfully.bookingapi.enums.TeamMemberType;
 import com.hostfully.bookingapi.models.dto.BaseDTO;
 import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.models.entity.PropertyTeamMember;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,6 +14,9 @@ import java.util.UUID;
 
 @Data
 public class PropertyTeamMemberDTO extends BaseDTO {
+    @Size(min = 1, message = "Name too short")
+    @Size(max = 255, message = "Name too long")
+    @NotBlank(message = "Name is mandatory")
     public String name;
     public UUID id;
     public UUID propertyId;

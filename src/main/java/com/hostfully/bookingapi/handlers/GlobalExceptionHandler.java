@@ -4,6 +4,8 @@ import com.hostfully.bookingapi.exceptions.ExistingBlockException;
 import com.hostfully.bookingapi.exceptions.ExistingBookingException;
 import com.hostfully.bookingapi.exceptions.OverlappingDatesException;
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
+import com.hostfully.bookingapi.models.validation.ApiResponseErrorModel;
+import com.hostfully.bookingapi.models.validation.ApiValidationResponseErrorModel;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
@@ -25,41 +26,41 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(exception.getMessage()))));
+                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(new ApiResponseErrorModel(exception.getMessage())))));
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(
+    public ResponseEntity<ApiResponseDTO<Map<String,String>>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+        ArrayList<ApiResponseErrorModel> errors = new ArrayList<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            errors.add(new ApiResponseErrorModel(fieldName, errorMessage));
         });
-        return errors;
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST).body(new ApiResponseDTO<>(null, errors));
     }
 
     @ExceptionHandler({OverlappingDatesException.class, ExistingBookingException.class, ExistingBlockException.class})
     public ResponseEntity<Object> handleBusinessException(Exception exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(exception.getMessage()))));
+                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(new ApiResponseErrorModel(exception.getMessage())))));
     }
 
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<Object> handleRuntimeException(DataIntegrityViolationException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList("Dependent entities exist. Please remove or reassign them before attempting to delete this entity."))));
+                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(new ApiResponseErrorModel("Dependent entities exist. Please remove or reassign them before attempting to delete this entity.")))));
     }
 
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<Object> handleRuntimeException(RuntimeException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList("Oops! Something went wrong. Please contact support"))));
+                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(new ApiResponseErrorModel("Oops! Something went wrong. Please contact support")))));
     }
 
 

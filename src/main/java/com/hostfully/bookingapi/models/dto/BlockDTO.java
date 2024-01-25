@@ -5,6 +5,9 @@ import com.hostfully.bookingapi.models.entity.Booking;
 import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.models.entity.PropertyTeamMember;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,10 +25,13 @@ public class BlockDTO extends BaseDTO {
     @Schema(example = "91b23fb9-d079-40aa-84e5-4c438ce99411")
     private UUID propertyId;
     @Schema(example = "Maintenance", maxLength = 255)
+    @Size(max = 255, message = "Reason description too long")
     private String reason;
     @Schema(example = "2024-01-01T00:00")
+    @PastOrPresent(message = "startDateTime should be lower or equal than today")
     private LocalDateTime startDateTime;
     @Schema(example = "2024-01-02T12:00")
+    @FutureOrPresent(message = "endDateTime should be higher or equal than today")
     private LocalDateTime endDateTime;
 
 

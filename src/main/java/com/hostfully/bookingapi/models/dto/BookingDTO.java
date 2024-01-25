@@ -7,7 +7,7 @@ import com.hostfully.bookingapi.models.entity.Booking;
 import com.hostfully.bookingapi.models.entity.Guest;
 import com.hostfully.bookingapi.models.entity.Property;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -22,10 +22,13 @@ public class BookingDTO extends BaseDTO {
     private UUID guestId;
     private BookingStatus status;
     private UUID propertyId;
+    @PastOrPresent(message = "startDateTime should be lower or equal than today")
     private LocalDateTime startDateTime;
+    @FutureOrPresent(message = "endDateTime should be higher or equal than today")
     private LocalDateTime endDateTime;
-    @Min(value = 1, message = "Age should not be less than 15")
+    @Min(value = 1, message = "It is required to have at least one adult")
     private Integer adults;
+    @Max(value = 99, message = "Value too long")
     private Integer children;
 
     public Booking toEntity(Property property, Guest guest){

@@ -2,6 +2,7 @@ package com.hostfully.bookingapi.handlers;
 
 import com.hostfully.bookingapi.exceptions.ExistingBlockException;
 import com.hostfully.bookingapi.exceptions.ExistingBookingException;
+import com.hostfully.bookingapi.exceptions.InvalidDateRangeException;
 import com.hostfully.bookingapi.exceptions.OverlappingDatesException;
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import com.hostfully.bookingapi.models.validation.ApiResponseErrorModel;
@@ -38,6 +39,16 @@ public class GlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.add(new ApiResponseErrorModel(fieldName, errorMessage));
         });
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST).body(new ApiResponseDTO<>(null, errors));
+    }
+
+    @ExceptionHandler(InvalidDateRangeException.class)
+    public ResponseEntity<ApiResponseDTO<Map<String,String>>> handleInvalidDateRangeException(
+            InvalidDateRangeException ex) {
+        ArrayList<ApiResponseErrorModel> errors = new ArrayList<>();
+        errors.add(new ApiResponseErrorModel("startDateTime", "startDateTime should be before endDateTime"));
+        errors.add(new ApiResponseErrorModel("endDateTime", "endDateTime should be after startDateTime"));
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST).body(new ApiResponseDTO<>(null, errors));
     }

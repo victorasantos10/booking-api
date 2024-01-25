@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static com.hostfully.bookingapi.helpers.ValidationHelpers.validateDateRange;
+
 @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "OK"),
         @ApiResponse(responseCode = "404", description = "Not found"),
@@ -36,12 +38,14 @@ public class BookingController {
     @Operation(summary = "Create a booking")
     @PostMapping()
     public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody @Valid BookingDTO bookingDto){
+        validateDateRange(bookingDto.getStartDateTime(), bookingDto.getEndDateTime());
         return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(bookingDto)));
     }
 
     @Operation(summary = "Update a booking")
     @PutMapping()
     public ResponseEntity updateBooking(@RequestBody @Valid BookingDTO bookingDto) {
+        validateDateRange(bookingDto.getStartDateTime(), bookingDto.getEndDateTime());
         bookingService.updateBooking(bookingDto);
         return ResponseEntity.ok().build();
     }

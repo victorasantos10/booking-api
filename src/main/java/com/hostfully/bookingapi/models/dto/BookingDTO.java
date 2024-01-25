@@ -19,14 +19,20 @@ import static com.hostfully.bookingapi.helpers.DateHelpers.truncateAndSetToUTC;
 @Data
 public class BookingDTO extends BaseDTO {
     private UUID id;
+    @NotNull(message = "Field is mandatory")
     private UUID guestId;
+    @NotNull(message = "Field is mandatory")
     private BookingStatus status;
+    @NotNull(message = "Field is mandatory")
     private UUID propertyId;
-    @PastOrPresent(message = "startDateTime should be lower or equal than today")
+    @FutureOrPresent(message = "startDateTime cannot be in the past")
+    @NotNull(message = "Field is mandatory")
     private LocalDateTime startDateTime;
-    @FutureOrPresent(message = "endDateTime should be higher or equal than today")
+    @FutureOrPresent(message = "endDateTime cannot be in the past")
+    @NotNull(message = "Field is mandatory")
     private LocalDateTime endDateTime;
     @Min(value = 1, message = "It is required to have at least one adult")
+    @NotNull(message = "Field is mandatory")
     private Integer adults;
     @Max(value = 99, message = "Value too long")
     private Integer children;

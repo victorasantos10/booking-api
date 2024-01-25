@@ -5,6 +5,7 @@ import com.hostfully.bookingapi.models.dto.BaseDTO;
 import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.models.entity.PropertyTeamMember;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -16,10 +17,12 @@ import java.util.UUID;
 public class PropertyTeamMemberDTO extends BaseDTO {
     @Size(min = 1, message = "Name too short")
     @Size(max = 255, message = "Name too long")
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank(message = "Field is mandatory")
     public String name;
     public UUID id;
+    @NotNull(message = "Field is mandatory")
     public UUID propertyId;
+    @NotNull(message = "Field is mandatory")
     public TeamMemberType type;
 
     public PropertyTeamMember toEntity(Property property){

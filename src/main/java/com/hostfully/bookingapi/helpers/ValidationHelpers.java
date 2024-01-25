@@ -1,5 +1,8 @@
 package com.hostfully.bookingapi.helpers;
 
+import com.hostfully.bookingapi.exceptions.InvalidDateRangeException;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ValidationHelpers {
@@ -12,6 +15,12 @@ public class ValidationHelpers {
         }
         catch(IllegalArgumentException ex){
             return false;
+        }
+    }
+
+    public static void validateDateRange(LocalDateTime startDateTime, LocalDateTime endDateTime){
+        if(startDateTime.isAfter(endDateTime) || endDateTime.isBefore(startDateTime)){
+            throw new InvalidDateRangeException();
         }
     }
 }

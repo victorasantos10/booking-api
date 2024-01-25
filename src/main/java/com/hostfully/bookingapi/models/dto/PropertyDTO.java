@@ -17,10 +17,10 @@ public class PropertyDTO extends BaseDTO {
 
     @Size(min = 1, message = "Name too short")
     @Size(max = 255, message = "Name too long")
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank(message = "Field is mandatory")
     private String name;
 
-    @NotBlank(message = "Address is mandatory")
+    @NotBlank(message = "Field is mandatory")
     @Size(min = 1, message = "Address too short")
     @Size(max = 255, message = "Address too long")
     private String address;

@@ -1,7 +1,9 @@
 package com.hostfully.bookingapi.controllers;
 
+import com.hostfully.bookingapi.helpers.ValidationHelpers;
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import com.hostfully.bookingapi.models.dto.BlockDTO;
+import com.hostfully.bookingapi.models.entity.Block;
 import com.hostfully.bookingapi.services.BlockService;
 import com.hostfully.bookingapi.services.PropertyTeamMemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+
+import static com.hostfully.bookingapi.helpers.ValidationHelpers.validateDateRange;
 
 @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "OK"),
@@ -40,6 +44,7 @@ public class BlockController {
     @Operation(summary = "Create a new block for a property", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
     @PostMapping("{teamMemberUUID}")
     public ResponseEntity<ApiResponseDTO<UUID>> createBlock(@PathVariable UUID teamMemberUUID, @RequestBody BlockDTO blockDTO){
+        validateDateRange(blockDTO.getStartDateTime(), blockDTO.getEndDateTime());
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         return ResponseEntity.ok(new ApiResponseDTO<>(blockService.createBlock(teamMemberUUID, blockDTO)));
     }
@@ -47,6 +52,7 @@ public class BlockController {
     @Operation(summary = "Update property block", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
     @PutMapping("{teamMemberUUID}")
     public ResponseEntity updateBlock(@PathVariable UUID teamMemberUUID, @RequestBody @Valid BlockDTO blockDTO){
+        validateDateRange(blockDTO.getStartDateTime(), blockDTO.getEndDateTime());
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         blockService.updateBlock(blockDTO);
         return ResponseEntity.ok().build();

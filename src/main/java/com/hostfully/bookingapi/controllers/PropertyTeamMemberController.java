@@ -4,6 +4,7 @@ import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import com.hostfully.bookingapi.models.dto.PropertyTeamMemberDTO;
 import com.hostfully.bookingapi.services.PropertyTeamMemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +30,12 @@ public class PropertyTeamMemberController {
     }
 
     @PostMapping()
-    public ResponseEntity<ApiResponseDTO<UUID>> createPropertyTeamMembers(@RequestBody PropertyTeamMemberDTO propertyDTO){
+    public ResponseEntity<ApiResponseDTO<UUID>> createPropertyTeamMembers(@RequestBody @Valid PropertyTeamMemberDTO propertyDTO){
         return ResponseEntity.ok(new ApiResponseDTO<>(propertyTeamMemberService.createPropertyTeamMember(propertyDTO)));
     }
 
     @PutMapping()
-    public ResponseEntity updatePropertyTeamMembers(@RequestBody PropertyTeamMemberDTO propertyDTO){
+    public ResponseEntity updatePropertyTeamMembers(@RequestBody @Valid PropertyTeamMemberDTO propertyDTO){
         propertyTeamMemberService.updatePropertyTeamMember(propertyDTO);
         return ResponseEntity.ok().build();
     }

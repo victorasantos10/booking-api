@@ -23,9 +23,9 @@ public class BlockDTO extends BaseDTO {
     private UUID propertyId;
     @Schema(example = "Maintenance", maxLength = 255)
     private String reason;
-    @Schema(example = "2024-01-01T00:00:00")
+    @Schema(example = "2024-01-01T00:00")
     private LocalDateTime startDateTime;
-    @Schema(example = "2024-01-02T12:00:00")
+    @Schema(example = "2024-01-02T12:00")
     private LocalDateTime endDateTime;
 
 

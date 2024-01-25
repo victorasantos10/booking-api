@@ -4,6 +4,7 @@ import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import com.hostfully.bookingapi.models.dto.GuestDTO;
 import com.hostfully.bookingapi.services.GuestService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +32,12 @@ public class GuestController {
 
 
     @PostMapping()
-    public ResponseEntity<ApiResponseDTO<UUID>> createGuest(@RequestBody GuestDTO guestDTO){
+    public ResponseEntity<ApiResponseDTO<UUID>> createGuest(@RequestBody @Valid GuestDTO guestDTO){
         return ResponseEntity.ok(new ApiResponseDTO<>(guestService.createGuest(guestDTO)));
     }
 
     @PutMapping()
-    public ResponseEntity updateGuest(@RequestBody GuestDTO guestDTO){
+    public ResponseEntity updateGuest(@RequestBody @Valid GuestDTO guestDTO){
         guestService.updateGuest(guestDTO);
         return ResponseEntity.ok().build();
     }

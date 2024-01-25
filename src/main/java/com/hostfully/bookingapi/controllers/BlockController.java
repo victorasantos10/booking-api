@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class BlockController {
 
     @Operation(summary = "Update property block", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
     @PutMapping("{teamMemberUUID}")
-    public ResponseEntity updateBlock(@PathVariable UUID teamMemberUUID, @RequestBody BlockDTO blockDTO){
+    public ResponseEntity updateBlock(@PathVariable UUID teamMemberUUID, @RequestBody @Valid BlockDTO blockDTO){
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         blockService.updateBlock(blockDTO);
         return ResponseEntity.ok().build();

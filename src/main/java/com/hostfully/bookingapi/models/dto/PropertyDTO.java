@@ -2,6 +2,7 @@ package com.hostfully.bookingapi.models.dto;
 
 import com.hostfully.bookingapi.models.dto.BaseDTO;
 import com.hostfully.bookingapi.models.entity.Property;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Data
 public class PropertyDTO extends BaseDTO {
     private UUID id;
+    @NotBlank(message = "Name is mandatory")
     private String name;
     private String address;
 

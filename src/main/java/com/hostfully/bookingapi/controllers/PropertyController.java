@@ -4,13 +4,16 @@ import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import com.hostfully.bookingapi.models.dto.PropertyDTO;
 import com.hostfully.bookingapi.services.PropertyService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
+@Validated
 @RestController
 @Tag(name = "Property API", description = "Creates a new property in the system")
 @RequestMapping(value = "/api/properties")
@@ -30,12 +33,12 @@ public class PropertyController {
     }
 
     @PostMapping()
-    public ResponseEntity<ApiResponseDTO<UUID>> createProperty(@RequestBody PropertyDTO propertyDTO){
+    public ResponseEntity<ApiResponseDTO<UUID>> createProperty(@RequestBody @Valid PropertyDTO propertyDTO){
         return ResponseEntity.ok(new ApiResponseDTO<>(propertyService.createProperty(propertyDTO)));
     }
 
     @PutMapping()
-    public ResponseEntity updateProperty(@RequestBody PropertyDTO propertyDTO){
+    public ResponseEntity updateProperty(@RequestBody @Valid PropertyDTO propertyDTO){
         propertyService.updateProperty(propertyDTO);
         return ResponseEntity.ok().build();
     }

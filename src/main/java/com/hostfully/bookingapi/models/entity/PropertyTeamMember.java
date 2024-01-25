@@ -1,15 +1,16 @@
 package com.hostfully.bookingapi.models.entity;
 
 import com.hostfully.bookingapi.enums.TeamMemberType;
-import com.hostfully.bookingapi.models.dto.propertyteammember.PropertyTeamMemberDTO;
+import com.hostfully.bookingapi.models.dto.PropertyTeamMemberDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
+@DynamicUpdate
 @Entity
 @Data
 public class PropertyTeamMember extends BaseEntity {
@@ -17,7 +18,7 @@ public class PropertyTeamMember extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     public UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "propertyId")
     public Property property;
 

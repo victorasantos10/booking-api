@@ -1,14 +1,12 @@
 package com.hostfully.bookingapi.models.entity;
 
-import com.hostfully.bookingapi.models.dto.guest.GuestDTO;
+import com.hostfully.bookingapi.models.dto.GuestDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.UUID;

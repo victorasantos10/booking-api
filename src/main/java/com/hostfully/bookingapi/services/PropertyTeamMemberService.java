@@ -1,7 +1,6 @@
 package com.hostfully.bookingapi.services;
 
-import com.hostfully.bookingapi.models.dto.property.PropertyDTO;
-import com.hostfully.bookingapi.models.dto.propertyteammember.PropertyTeamMemberDTO;
+import com.hostfully.bookingapi.models.dto.PropertyTeamMemberDTO;
 import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.models.entity.PropertyTeamMember;
 import com.hostfully.bookingapi.repositories.PropertyRepository;

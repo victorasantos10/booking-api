@@ -1,7 +1,6 @@
 package com.hostfully.bookingapi.models.entity;
 
-import com.hostfully.bookingapi.models.dto.block.BlockDTO;
-import com.hostfully.bookingapi.models.dto.booking.BookingDTO;
+import com.hostfully.bookingapi.models.dto.BlockDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,39 +14,38 @@ import java.util.UUID;
 public class Block extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    public UUID id;
+    private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "propertyId", referencedColumnName = "id")
-    public Property property;
+    private Property property;
 
     @Column(name = "propertyId", updatable = false, insertable=false)
-    public UUID propertyId;
+    private UUID propertyId;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "propertyTeamMemberId", referencedColumnName = "id")
-    public PropertyTeamMember propertyTeamMember;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "createdByPropertyTeamMemberId", referencedColumnName = "id")
+    private PropertyTeamMember propertyTeamMember;
 
-    @Column(name = "propertyTeamMemberId", updatable = false, insertable=false)
-    public UUID propertyTeamMemberId;
+    @Column(name = "createdByPropertyTeamMemberId", updatable = false, insertable=false)
+    private UUID propertyTeamMemberId;
 
-    public LocalDateTime startDateTime;
+    private LocalDateTime startDateTime;
 
-    public String reason;
+    private String reason;
 
-    public boolean isActive = true;
+    private boolean isActive = true;
 
-    public LocalDateTime endDateTime;
+    private LocalDateTime endDateTime;
 
     public BlockDTO toDTO(){
         BlockDTO dto = new BlockDTO();
 
-        dto.id = id;
-        dto.propertyId = propertyId;
-        dto.propertyTeamMemberId = propertyTeamMemberId;
-        dto.startDateTime = startDateTime;
-        dto.reason = reason;
-        dto.endDateTime = endDateTime;
+        dto.setId(getId());
+        dto.setPropertyId(getPropertyId());
+        dto.setStartDateTime(getStartDateTime());
+        dto.setReason(getReason());
+        dto.setEndDateTime(getEndDateTime());
         dto.createdDateTime = createdDateTime;
         dto.updatedDateTime = updatedDateTime;
 

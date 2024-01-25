@@ -1,8 +1,7 @@
 package com.hostfully.bookingapi.controllers;
 
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
-import com.hostfully.bookingapi.models.dto.block.BlockDTO;
-import com.hostfully.bookingapi.models.entity.Block;
+import com.hostfully.bookingapi.models.dto.BlockDTO;
 import com.hostfully.bookingapi.services.BlockService;
 import com.hostfully.bookingapi.services.PropertyTeamMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class BlockController {
     @PostMapping("{teamMemberUUID}")
     public ResponseEntity<ApiResponseDTO<UUID>> createBlock(@PathVariable UUID teamMemberUUID, @RequestBody BlockDTO blockDTO){
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
-        return ResponseEntity.ok(new ApiResponseDTO<>(blockService.createBlock(blockDTO)));
+        return ResponseEntity.ok(new ApiResponseDTO<>(blockService.createBlock(teamMemberUUID, blockDTO)));
     }
 
     @PutMapping("{teamMemberUUID}")

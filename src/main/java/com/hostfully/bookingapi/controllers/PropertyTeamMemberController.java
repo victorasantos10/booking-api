@@ -1,9 +1,7 @@
 package com.hostfully.bookingapi.controllers;
 
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
-import com.hostfully.bookingapi.models.dto.property.PropertyDTO;
-import com.hostfully.bookingapi.models.dto.propertyteammember.PropertyTeamMemberDTO;
-import com.hostfully.bookingapi.services.PropertyService;
+import com.hostfully.bookingapi.models.dto.PropertyTeamMemberDTO;
 import com.hostfully.bookingapi.services.PropertyTeamMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +38,8 @@ public class PropertyTeamMemberController {
     }
 
     @DeleteMapping("{teamMemberUUID}")
-    public ResponseEntity deletePropertyTeamMembers(@PathVariable UUID propertyUUID){
-        propertyTeamMemberService.deletePropertyTeamMember(propertyUUID);
+    public ResponseEntity deletePropertyTeamMembers(@PathVariable UUID teamMemberUUID){
+        propertyTeamMemberService.deletePropertyTeamMember(teamMemberUUID);
         return ResponseEntity.ok().build();
     }
 }

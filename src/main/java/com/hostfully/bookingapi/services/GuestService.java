@@ -1,15 +1,13 @@
 package com.hostfully.bookingapi.services;
 
-import com.hostfully.bookingapi.models.dto.guest.GuestDTO;
+import com.hostfully.bookingapi.models.dto.GuestDTO;
 import com.hostfully.bookingapi.models.entity.Guest;
-import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.repositories.GuestRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

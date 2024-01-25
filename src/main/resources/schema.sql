@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS Booking (
 CREATE TABLE IF NOT EXISTS Block (
     id UUID NOT NULL,
     propertyId UUID,
+    createdByPropertyTeamMemberId UUID,
     startDateTime TIMESTAMP,
     reason VARCHAR(255),
     isActive BIT,

@@ -4,7 +4,7 @@ import com.hostfully.bookingapi.enums.BookingStatus;
 import com.hostfully.bookingapi.exceptions.ExistingBlockException;
 import com.hostfully.bookingapi.exceptions.ExistingBookingException;
 import com.hostfully.bookingapi.exceptions.OverlappingDatesException;
-import com.hostfully.bookingapi.models.dto.booking.BookingDTO;
+import com.hostfully.bookingapi.models.dto.BookingDTO;
 import com.hostfully.bookingapi.models.entity.Block;
 import com.hostfully.bookingapi.models.entity.Booking;
 import com.hostfully.bookingapi.models.entity.Guest;

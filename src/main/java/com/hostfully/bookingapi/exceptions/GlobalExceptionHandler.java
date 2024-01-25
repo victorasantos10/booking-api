@@ -20,8 +20,8 @@ public class GlobalExceptionHandler {
                 .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(exception.getMessage()))));
     }
 
-    @ExceptionHandler({OverlappingDatesException.class, ExistingBlockException.class, ExistingBookingException.class})
-    public ResponseEntity<Object> handleOverlappingDatesException(OverlappingDatesException exception) {
+    @ExceptionHandler({OverlappingDatesException.class, ExistingBookingException.class, ExistingBlockException.class})
+    public ResponseEntity<Object> handleBusinessException(Exception exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(exception.getMessage()))));
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<Object> handleRuntimeException(DataIntegrityViolationException exception) {
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .status(HttpStatus.BAD_REQUEST)
                 .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList("Dependent entities exist. Please remove or reassign them before attempting to delete this entity."))));
     }
 

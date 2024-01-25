@@ -1,4 +1,4 @@
-package com.hostfully.bookingapi.models.dto.guest;
+package com.hostfully.bookingapi.models.dto;
 
 import com.hostfully.bookingapi.models.dto.BaseDTO;
 import com.hostfully.bookingapi.models.entity.Guest;
@@ -29,11 +29,11 @@ public class GuestDTO extends BaseDTO {
 
 
         if (entity.id == null) {
-            // If id is null or invalid, it's a new entity
-            entity.createdDateTime = LocalDateTime.now(ZoneOffset.UTC);
+            // If id is null, it's a new entity
+            entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
         } else {
             // If id is not null, it's an existing entity being updated
-            entity.updatedDateTime = LocalDateTime.now(ZoneOffset.UTC);
+            entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
         }
 
 

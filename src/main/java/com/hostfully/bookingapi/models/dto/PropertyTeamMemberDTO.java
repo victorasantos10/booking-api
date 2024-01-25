@@ -1,4 +1,4 @@
-package com.hostfully.bookingapi.models.dto.propertyteammember;
+package com.hostfully.bookingapi.models.dto;
 
 import com.hostfully.bookingapi.enums.TeamMemberType;
 import com.hostfully.bookingapi.models.dto.BaseDTO;
@@ -27,10 +27,10 @@ public class PropertyTeamMemberDTO extends BaseDTO {
 
         if (entity.id == null) {
             // If id is null, it's a new entity
-            entity.createdDateTime = LocalDateTime.now(ZoneOffset.UTC);
+            entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
         } else {
             // If id is not null, it's an existing entity being updated
-            entity.updatedDateTime = LocalDateTime.now(ZoneOffset.UTC);
+            entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
         }
 
         return entity;

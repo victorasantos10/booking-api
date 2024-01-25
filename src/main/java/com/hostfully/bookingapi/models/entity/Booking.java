@@ -1,7 +1,7 @@
 package com.hostfully.bookingapi.models.entity;
 
 import com.hostfully.bookingapi.enums.BookingStatus;
-import com.hostfully.bookingapi.models.dto.booking.BookingDTO;
+import com.hostfully.bookingapi.models.dto.BookingDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,14 +17,14 @@ public class Booking extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     public UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guestId", referencedColumnName = "id")
     public Guest guest;
 
     @Column(name = "guestId", updatable = false, insertable=false)
     public UUID guestId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "propertyId", referencedColumnName = "id")
     public Property property;
 

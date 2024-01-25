@@ -1,7 +1,7 @@
 package com.hostfully.bookingapi.controllers;
 
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
-import com.hostfully.bookingapi.models.dto.booking.BookingDTO;
+import com.hostfully.bookingapi.models.dto.BookingDTO;
 import com.hostfully.bookingapi.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,14 +1,16 @@
 package com.hostfully.bookingapi.models.entity;
 
-import com.hostfully.bookingapi.models.dto.property.PropertyDTO;
+import com.hostfully.bookingapi.models.dto.PropertyDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@DynamicUpdate
 @Entity
 public class Property extends BaseEntity {
     @Id

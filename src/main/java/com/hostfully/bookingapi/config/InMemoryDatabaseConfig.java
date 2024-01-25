@@ -14,6 +14,7 @@ public class InMemoryDatabaseConfig {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("schema.sql")
+                .addScript("init-data.sql")
                 .build();
     }
 }

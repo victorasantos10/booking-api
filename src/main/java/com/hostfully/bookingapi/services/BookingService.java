@@ -63,7 +63,20 @@ public class BookingService {
         guestRepository.findById(dto.getGuestId()).orElseThrow(() -> new EntityNotFoundException("Guest not found"));
         Booking booking = bookingRepository.findById(dto.getId()).orElseThrow(() -> new EntityNotFoundException("Booking not found"));
 
-        validateBooking(dto);
+        ArrayList<Booking> datesOverlapping = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDateTime(), dto.getEndDateTime());
+        Block blockOverlapping = blockRepository.findByPropertyIdAndIsActiveAndStartDateTimeAndEndDateTime(dto.getPropertyId(), true, dto.getStartDateTime(), dto.getEndDateTime());
+
+        if(!datesOverlapping.isEmpty()){
+            //providing a more friendly message if user already has a booking
+            if(datesOverlapping.stream().anyMatch(item -> item.getGuestId() == dto.getGuestId())){
+                throw new ExistingBookingException("You already have an existing booking for the same property in the same date");
+            }
+            throw new OverlappingDatesException("The property isn't available at those dates. Please select another date range.");
+        }
+
+        if(blockOverlapping != null){
+            throw new ExistingBlockException("The property is currently blocked. Reason: " + blockOverlapping.getReason());
+        }
         bookingRepository.save(dto.toEntityUpdate(booking));
     }
 

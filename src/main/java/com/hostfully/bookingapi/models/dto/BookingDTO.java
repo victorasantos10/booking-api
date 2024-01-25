@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+import static com.hostfully.bookingapi.helpers.DateHelpers.truncateAndSetToUTC;
+
 @Data
 public class BookingDTO extends BaseDTO {
     private UUID id;
@@ -34,8 +36,8 @@ public class BookingDTO extends BaseDTO {
         entity.setStatus(getStatus().getValue());
         entity.setAdults(getAdults());
         entity.setChildren(getChildren());
-        entity.setStartDateTime(getStartDateTime());
-        entity.setEndDateTime(getEndDateTime());
+        entity.setStartDateTime(truncateAndSetToUTC(getStartDateTime()));
+        entity.setEndDateTime(truncateAndSetToUTC(getEndDateTime()));
         entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
         entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
@@ -46,8 +48,8 @@ public class BookingDTO extends BaseDTO {
         entity.setStatus(getStatus() != null ? getStatus().getValue() : entity.getStatus());
         entity.setAdults(getAdults() != null ? getAdults() : entity.getAdults());
         entity.setChildren(getChildren() != null ? getChildren() : entity.getChildren());
-        entity.setStartDateTime(getStartDateTime() != null ? getStartDateTime() : entity.getStartDateTime());
-        entity.setEndDateTime(getEndDateTime() != null ? getEndDateTime() : entity.getEndDateTime());
+        entity.setStartDateTime(getStartDateTime() != null ? truncateAndSetToUTC(getStartDateTime()) : truncateAndSetToUTC(entity.getStartDateTime()));
+        entity.setEndDateTime(getEndDateTime() != null ? truncateAndSetToUTC(getEndDateTime()) : truncateAndSetToUTC(entity.getEndDateTime()));
         entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
         return entity;

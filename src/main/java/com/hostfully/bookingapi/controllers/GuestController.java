@@ -3,6 +3,7 @@ package com.hostfully.bookingapi.controllers;
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import com.hostfully.bookingapi.models.dto.GuestDTO;
 import com.hostfully.bookingapi.services.GuestService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "Guest API", description = "Creates a new guest in the system")
 @RequestMapping(value = "/api/guests")
 public class GuestController {
 

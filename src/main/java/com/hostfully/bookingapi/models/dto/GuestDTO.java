@@ -2,6 +2,7 @@ package com.hostfully.bookingapi.models.dto;
 
 import com.hostfully.bookingapi.models.dto.BaseDTO;
 import com.hostfully.bookingapi.models.entity.Guest;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,10 +12,15 @@ import java.util.UUID;
 
 @Data
 public class GuestDTO extends BaseDTO {
+    @Schema(example = "178147cd-b3e6-4e64-91e2-af16bd22c8f0")
     private UUID id;
+    @Schema(example = "John Doe", maxLength = 255)
     private String name;
+    @Schema(example = "1980-01-01")
     private LocalDate dateOfBirth;
+    @Schema(example = "johndoe@contoso.com", maxLength = 255)
     private String email;
+    @Schema(example = "+123456789", maxLength = 255)
     private String phone;
 
     public Guest toEntity(){

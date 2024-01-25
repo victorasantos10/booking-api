@@ -3,6 +3,7 @@ package com.hostfully.bookingapi.controllers;
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import com.hostfully.bookingapi.models.dto.PropertyTeamMemberDTO;
 import com.hostfully.bookingapi.services.PropertyTeamMemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "Property Team Member API", description = "Creates a new property team member in the system. A team member can be either a MANAGER or OWNER")
 @RequestMapping(value = "/api/property-team-members")
 public class PropertyTeamMemberController {
     @Autowired

@@ -10,8 +10,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public enum BookingStatus {
     ACTIVE(1),
-    CANCELLED(2),
-    BLOCKED(3);
+    REBOOKED(2),
+    CANCELLED(3),
+    BLOCKED(4);
 
     private Integer value;
 

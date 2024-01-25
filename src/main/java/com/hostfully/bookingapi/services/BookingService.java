@@ -14,8 +14,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class BookingService {
@@ -38,10 +37,7 @@ public class BookingService {
     }
 
     public void cancelBooking(UUID bookingId) {
-        Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new EntityNotFoundException("Booking not found"));
-        booking.status = BookingStatus.CANCELLED.getValue();
-
-        bookingRepository.save(booking);
+        bookingRepository.updateBookingsStatus(new ArrayList<UUID>(Arrays.asList(bookingId)), BookingStatus.CANCELLED.getValue());
     }
 
     public UUID createOrUpdateBooking(BookingDTO dto){
@@ -55,13 +51,15 @@ public class BookingService {
             throw new ExistingBookingException("You already have an existing booking for the same property in the same date");
         }
 
-        // Checking if reservation dates are overlapping with any existing active bookings from other guest.
-        Long datesOverlapping = bookingRepository.overlappingBookingsCount(dto.getPropertyId(), dto.getStartDateTime(), dto.getEndDateTime());
+        ArrayList<Booking> datesOverlapping = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDateTime(), dto.getEndDateTime());
 
-        if(datesOverlapping > 0){
+        if(!datesOverlapping.isEmpty()){
+            //providing a more friendly message if user already has a booking
+            if(datesOverlapping.stream().anyMatch(item -> item.getGuestId() == dto.getGuestId())){
+                throw new ExistingBookingException("You already have an existing booking for the same property in the same date");
+            }
             throw new OverlappingDatesException("The property isn't available at those dates. Please select another date range.");
         }
-
 
         Booking savedEntity = bookingRepository.save(dto.toEntity(property, guest));
         return savedEntity.id;

@@ -32,14 +32,15 @@ public class BookingController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{bookingUUID}")
-    public ResponseEntity cancelBooking(@PathVariable UUID bookingUUID){
-        bookingService.cancelBooking(bookingUUID);
+    @DeleteMapping("/{bookingUUID}")
+    public ResponseEntity deleteBooking(@PathVariable UUID bookingUUID){
+        bookingService.deleteBooking(bookingUUID);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{bookingUUID}")
-    public void deleteBooking(@PathVariable UUID bookingUUID){
-        bookingService.deleteBooking(bookingUUID);
+    @PatchMapping("/{bookingUUID}")
+    public ResponseEntity cancelBooking(@PathVariable UUID bookingUUID){
+        bookingService.cancelBooking(bookingUUID);
+        return ResponseEntity.ok().build();
     }
 }

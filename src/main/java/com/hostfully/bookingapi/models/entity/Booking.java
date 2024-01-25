@@ -15,44 +15,44 @@ import java.util.UUID;
 public class Booking extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    public UUID id;
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guestId", referencedColumnName = "id")
-    public Guest guest;
+    private Guest guest;
 
     @Column(name = "guestId", updatable = false, insertable=false)
-    public UUID guestId;
+    private UUID guestId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "propertyId", referencedColumnName = "id")
-    public Property property;
+    private Property property;
 
     @Column(name = "propertyId", updatable = false, insertable=false)
-    public UUID propertyId;
+    private UUID propertyId;
 
-    public Integer adults;
-    public Integer children;
+    private Integer adults;
+    private Integer children;
 
-    public Integer status;
+    private Integer status;
 
-    public LocalDateTime startDateTime;
+    private LocalDateTime startDateTime;
 
-    public LocalDateTime endDateTime;
+    private LocalDateTime endDateTime;
 
     public BookingDTO toDTO(){
         BookingDTO dto = new BookingDTO();
 
-        dto.id = id;
-        dto.startDateTime = startDateTime;
-        dto.endDateTime = endDateTime;
-        dto.guestId = guest.getId();
-        dto.propertyId = property.getId();
-        dto.status = BookingStatus.valueOf(status);
-        dto.adults = adults;
-        dto.children = children;
-        dto.createdDateTime = createdDateTime;
-        dto.updatedDateTime = updatedDateTime;
+        dto.setId(getId());
+        dto.setStartDateTime(getStartDateTime());
+        dto.setEndDateTime(getEndDateTime());
+        dto.setGuestId(getGuest().getId());
+        dto.setPropertyId(getProperty().getId());
+        dto.setStatus(BookingStatus.valueOf(status));
+        dto.setAdults(getAdults());
+        dto.setChildren(getChildren());
+        dto.setCreatedDateTime(getCreatedDateTime());
+        dto.setUpdatedDateTime(getUpdatedDateTime());
 
         return dto;
     }

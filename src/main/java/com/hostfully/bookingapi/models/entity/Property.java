@@ -23,11 +23,11 @@ public class Property extends BaseEntity {
     public PropertyDTO toDTO(){
         PropertyDTO dto = new PropertyDTO();
 
-        dto.id = id;
-        dto.name = name;
-        dto.address = address;
-        dto.createdDateTime = createdDateTime;
-        dto.updatedDateTime = updatedDateTime;
+        dto.setId(getId());
+        dto.setName(getName());
+        dto.setAddress(getAddress());
+        dto.setCreatedDateTime(getCreatedDateTime());
+        dto.setUpdatedDateTime(getUpdatedDateTime());
 
         return dto;
     }

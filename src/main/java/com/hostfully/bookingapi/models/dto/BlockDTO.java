@@ -24,7 +24,6 @@ public class BlockDTO extends BaseDTO {
     public Block toEntity(Property property, PropertyTeamMember propertyTeamMember){
         Block entity = new Block();
 
-        entity.setId(getId());
         entity.setReason(getReason());
         entity.setProperty(property);
         entity.setPropertyTeamMember(propertyTeamMember);

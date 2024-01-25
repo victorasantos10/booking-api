@@ -11,32 +11,29 @@ import java.util.UUID;
 
 @Data
 public class GuestDTO extends BaseDTO {
-    public UUID id;
-    public String name;
-    public LocalDate dateOfBirth;
-    public String email;
-    public String phone;
+    private UUID id;
+    private String name;
+    private LocalDate dateOfBirth;
+    private String email;
+    private String phone;
 
     public Guest toEntity(){
-
         Guest entity = new Guest();
+        entity.setName(getName());
+        entity.setDateOfBirth(getDateOfBirth());
+        entity.setEmail(getEmail());
+        entity.setPhone(getPhone());
+        entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
+        return entity;
+    }
 
-        entity.id = id;
-        entity.name = name;
-        entity.dateOfBirth = dateOfBirth;
-        entity.email = email;
-        entity.phone = phone;
+    public Guest toEntityUpdate(Guest entity){
+        entity.setName(getName() != null ? getName() : entity.getName());
+        entity.setDateOfBirth(getDateOfBirth() != null ? getDateOfBirth() : entity.getDateOfBirth());
+        entity.setEmail(getEmail() != null ? getEmail() : entity.getEmail());
+        entity.setPhone(getPhone() != null ? getPhone() : entity.getPhone());
 
-
-        if (entity.id == null) {
-            // If id is null, it's a new entity
-            entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
-        } else {
-            // If id is not null, it's an existing entity being updated
-            entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
-        }
-
-
+        entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
         return entity;
     }
 }

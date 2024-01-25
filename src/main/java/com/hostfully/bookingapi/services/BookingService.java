@@ -46,12 +46,28 @@ public class BookingService {
         bookingRepository.updateBookingsStatus(new ArrayList<UUID>(Arrays.asList(bookingId)), BookingStatus.CANCELLED.getValue());
     }
 
-    public UUID createOrUpdateBooking(BookingDTO dto){
-
+    public UUID createBooking(BookingDTO dto){
         //Checking if all derived entities exist.
         Property property = propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
         Guest guest = guestRepository.findById(dto.getGuestId()).orElseThrow(() -> new EntityNotFoundException("Guest not found"));
 
+        validateBooking(dto);
+
+        Booking savedEntity = bookingRepository.save(dto.toEntity(property, guest));
+        return savedEntity.getId();
+    }
+
+    public void updateBooking(BookingDTO dto){
+        //Checking if all derived entities exist.
+        propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
+        guestRepository.findById(dto.getGuestId()).orElseThrow(() -> new EntityNotFoundException("Guest not found"));
+        Booking booking = bookingRepository.findById(dto.getId()).orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+
+        validateBooking(dto);
+        bookingRepository.save(dto.toEntityUpdate(booking));
+    }
+
+    private void validateBooking(BookingDTO dto) {
         ArrayList<Booking> datesOverlapping = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDateTime(), dto.getEndDateTime());
         Block blockOverlapping = blockRepository.findByPropertyIdAndIsActiveAndStartDateTimeAndEndDateTime(dto.getPropertyId(), true, dto.getStartDateTime(), dto.getEndDateTime());
 
@@ -66,8 +82,5 @@ public class BookingService {
         if(blockOverlapping != null){
             throw new ExistingBlockException("The property is currently blocked. Reason: " + blockOverlapping.getReason());
         }
-
-        Booking savedEntity = bookingRepository.save(dto.toEntity(property, guest));
-        return savedEntity.id;
     }
 }

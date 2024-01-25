@@ -15,34 +15,38 @@ import java.util.UUID;
 
 @Data
 public class BookingDTO extends BaseDTO {
-    public UUID id;
-    public UUID guestId;
-    public BookingStatus status;
-    public UUID propertyId;
-    public LocalDateTime startDateTime;
-    public LocalDateTime endDateTime;
-    public Integer adults;
-    public Integer children;
+    private UUID id;
+    private UUID guestId;
+    private BookingStatus status;
+    private UUID propertyId;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+    private Integer adults;
+    private Integer children;
 
     public Booking toEntity(Property property, Guest guest){
         Booking entity = new Booking();
 
-        entity.id = id;
         entity.setProperty(property);
         entity.setGuest(guest);
-        entity.status = status.getValue();
-        entity.adults = adults;
-        entity.children = children;
-        entity.startDateTime = startDateTime;
-        entity.endDateTime = endDateTime;
+        entity.setStatus(getStatus().getValue());
+        entity.setAdults(getAdults());
+        entity.setChildren(getChildren());
+        entity.setStartDateTime(getStartDateTime());
+        entity.setEndDateTime(getEndDateTime());
+        entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
+        entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
-        if (entity.id == null) {
-            // If id is null, it's a new entity
-            entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
-        } else {
-            // If id is not null, it's an existing entity being updated
-            entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
-        }
+        return entity;
+    }
+
+    public Booking toEntityUpdate(Booking entity){
+        entity.setStatus(getStatus() != null ? getStatus().getValue() : entity.getStatus());
+        entity.setAdults(getAdults() != null ? getAdults() : entity.getAdults());
+        entity.setChildren(getChildren() != null ? getChildren() : entity.getChildren());
+        entity.setStartDateTime(getStartDateTime() != null ? getStartDateTime() : entity.getStartDateTime());
+        entity.setEndDateTime(getEndDateTime() != null ? getEndDateTime() : entity.getEndDateTime());
+        entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
         return entity;
     }

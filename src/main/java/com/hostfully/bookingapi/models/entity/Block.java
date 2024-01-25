@@ -46,8 +46,8 @@ public class Block extends BaseEntity {
         dto.setStartDateTime(getStartDateTime());
         dto.setReason(getReason());
         dto.setEndDateTime(getEndDateTime());
-        dto.createdDateTime = createdDateTime;
-        dto.updatedDateTime = updatedDateTime;
+        dto.setCreatedDateTime(getCreatedDateTime());
+        dto.setUpdatedDateTime(getUpdatedDateTime());
 
         return dto;
     }

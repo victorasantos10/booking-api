@@ -23,12 +23,12 @@ public class BookingController {
 
     @PostMapping()
     public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody BookingDTO bookingDto){
-        return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createOrUpdateBooking(bookingDto)));
+        return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(bookingDto)));
     }
 
     @PutMapping()
     public ResponseEntity updateBooking(@RequestBody BookingDTO bookingDto) {
-        bookingService.createOrUpdateBooking(bookingDto);
+        bookingService.updateBooking(bookingDto);
         return ResponseEntity.ok().build();
     }
 

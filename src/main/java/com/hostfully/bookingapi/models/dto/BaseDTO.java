@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class BaseDTO {
 
     @Schema(hidden = true)
-    public LocalDateTime createdDateTime;
+    protected LocalDateTime createdDateTime;
     @Schema(hidden = true)
-    public LocalDateTime updatedDateTime;
+    protected LocalDateTime updatedDateTime;
 }

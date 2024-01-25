@@ -20,18 +20,18 @@ public class PropertyTeamMemberDTO extends BaseDTO {
     public PropertyTeamMember toEntity(Property property){
         PropertyTeamMember entity = new PropertyTeamMember();
 
-        entity.id = id;
         entity.setProperty(property);
-        entity.name = name;
-        entity.type = type.getValue();
+        entity.setName(getName());
+        entity.setType(getType().getValue());
+        entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
-        if (entity.id == null) {
-            // If id is null, it's a new entity
-            entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
-        } else {
-            // If id is not null, it's an existing entity being updated
-            entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
-        }
+        return entity;
+    }
+
+    public PropertyTeamMember toEntityUpdate(PropertyTeamMember entity) {
+        entity.setName(getName() != null ? getName() : entity.getName());
+        entity.setType(getType().getValue() != null ? getType().getValue() : entity.getType());
+        entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
         return entity;
     }

@@ -17,21 +17,21 @@ import java.util.UUID;
 public class Guest extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    public UUID id;
-    public String name;
-    public LocalDate dateOfBirth;
-    public String email;
-    public String phone;
+    private UUID id;
+    private String name;
+    private LocalDate dateOfBirth;
+    private String email;
+    private String phone;
 
     public GuestDTO toDTO(){
         GuestDTO dto = new GuestDTO();
-        dto.id = id;
-        dto.name = name;
-        dto.dateOfBirth = dateOfBirth;
-        dto.email = email;
-        dto.phone = phone;
-        dto.createdDateTime = createdDateTime;
-        dto.updatedDateTime = updatedDateTime;
+        dto.setId(getId());
+        dto.setName(getName());
+        dto.setDateOfBirth(getDateOfBirth());
+        dto.setEmail(getEmail());
+        dto.setPhone(getPhone());
+        dto.setCreatedDateTime(getCreatedDateTime());
+        dto.setUpdatedDateTime(getUpdatedDateTime());
 
         return dto;
     }

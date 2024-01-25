@@ -16,25 +16,25 @@ import java.util.UUID;
 public class PropertyTeamMember extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    public UUID id;
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "propertyId")
-    public Property property;
+    private Property property;
 
     @Column(name = "propertyId", updatable = false, insertable=false)
-    public UUID propertyId;
+    private UUID propertyId;
 
-    public String name;
-    public Integer type;
+    private String name;
+    private Integer type;
 
     public PropertyTeamMemberDTO toDTO(){
         PropertyTeamMemberDTO dto = new PropertyTeamMemberDTO();
 
-        dto.id = id;
-        dto.propertyId = property.getId();
-        dto.name = name;
-        dto.type = TeamMemberType.valueOf(type);
+        dto.setId(getId());
+        dto.setPropertyId(getProperty().getId());
+        dto.setName(getName());
+        dto.setType(TeamMemberType.valueOf(type));
 
         return dto;
     }

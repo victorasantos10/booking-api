@@ -1,12 +1,15 @@
 package com.hostfully.bookingapi.services;
 
 import com.hostfully.bookingapi.enums.BookingStatus;
+import com.hostfully.bookingapi.exceptions.ExistingBlockException;
 import com.hostfully.bookingapi.exceptions.ExistingBookingException;
 import com.hostfully.bookingapi.exceptions.OverlappingDatesException;
 import com.hostfully.bookingapi.models.dto.booking.BookingDTO;
+import com.hostfully.bookingapi.models.entity.Block;
 import com.hostfully.bookingapi.models.entity.Booking;
 import com.hostfully.bookingapi.models.entity.Guest;
 import com.hostfully.bookingapi.models.entity.Property;
+import com.hostfully.bookingapi.repositories.BlockRepository;
 import com.hostfully.bookingapi.repositories.BookingRepository;
 import com.hostfully.bookingapi.repositories.GuestRepository;
 import com.hostfully.bookingapi.repositories.PropertyRepository;
@@ -16,11 +19,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+
 @Service
 public class BookingService {
 
     @Autowired
     BookingRepository bookingRepository;
+    @Autowired
+    BlockRepository blockRepository;
     @Autowired
     PropertyRepository propertyRepository;
     @Autowired
@@ -41,17 +47,13 @@ public class BookingService {
     }
 
     public UUID createOrUpdateBooking(BookingDTO dto){
+
         //Checking if all derived entities exist.
         Property property = propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
         Guest guest = guestRepository.findById(dto.getGuestId()).orElseThrow(() -> new EntityNotFoundException("Guest not found"));
 
-        Optional<Booking> existingBooking = bookingRepository.findByGuestIdAndPropertyIdAndStartDateTimeAndEndDateTime(guest.id, property.id, dto.getStartDateTime(), dto.getEndDateTime());
-
-        if(existingBooking.isPresent()){
-            throw new ExistingBookingException("You already have an existing booking for the same property in the same date");
-        }
-
         ArrayList<Booking> datesOverlapping = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDateTime(), dto.getEndDateTime());
+        Block blockOverlapping = blockRepository.findByPropertyIdAndIsActiveAndStartDateTimeAndEndDateTime(dto.getPropertyId(), true, dto.getStartDateTime(), dto.getEndDateTime());
 
         if(!datesOverlapping.isEmpty()){
             //providing a more friendly message if user already has a booking
@@ -59,6 +61,10 @@ public class BookingService {
                 throw new ExistingBookingException("You already have an existing booking for the same property in the same date");
             }
             throw new OverlappingDatesException("The property isn't available at those dates. Please select another date range.");
+        }
+
+        if(blockOverlapping != null){
+            throw new ExistingBlockException("The property is currently blocked. Reason: " + blockOverlapping.getReason());
         }
 
         Booking savedEntity = bookingRepository.save(dto.toEntity(property, guest));

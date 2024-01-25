@@ -31,6 +31,7 @@ public class PropertyTeamMember extends BaseEntity {
         PropertyTeamMemberDTO dto = new PropertyTeamMemberDTO();
 
         dto.id = id;
+        dto.propertyId = property.getId();
         dto.name = name;
         dto.type = type;
 

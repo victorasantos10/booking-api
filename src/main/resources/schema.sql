@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS Block (
     propertyId UUID,
     startDateTime TIMESTAMP,
     reason VARCHAR(255),
+    isActive BIT,
     endDateTime TIMESTAMP,
     createdDateTime TIMESTAMP,
     updatedDateTime TIMESTAMP,

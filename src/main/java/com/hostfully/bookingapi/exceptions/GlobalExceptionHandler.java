@@ -19,12 +19,13 @@ public class GlobalExceptionHandler {
                 .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(exception.getMessage()))));
     }
 
-    @ExceptionHandler({OverlappingDatesException.class})
+    @ExceptionHandler({OverlappingDatesException.class, ExistingBlockException.class, ExistingBookingException.class})
     public ResponseEntity<Object> handleOverlappingDatesException(OverlappingDatesException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(exception.getMessage()))));
     }
+
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<Object> handleRuntimeException(RuntimeException exception) {
         return ResponseEntity

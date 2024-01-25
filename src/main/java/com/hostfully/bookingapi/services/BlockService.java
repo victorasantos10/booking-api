@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class BlockService {
@@ -26,8 +27,6 @@ public class BlockService {
 
     @Autowired
     BookingRepository bookingRepository;
-    @Autowired
-    BookingService bookingService;
 
     public BlockDTO getBlock(UUID blockUUID){
         Block blockEntity = blockRepository.findById(blockUUID).orElseThrow(() -> new EntityNotFoundException("Block not found"));
@@ -41,11 +40,12 @@ public class BlockService {
     }
 
     public UUID createBlock(BlockDTO dto){
+        //Checking if property is valid.
         Property property = propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
 
-        //If there are any bookings in that date, block them.
+        //If there are any bookings in that date, set them as blocked.
         ArrayList<Booking> activeBookings = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDateTime(), dto.getEndDateTime());
-        bookingRepository.updateBookingsStatus(activeBookings.stream().map(Booking::getId).toList(), BookingStatus.BLOCKED.getValue());
+        bookingRepository.updateBookingsStatus(activeBookings.stream().map(Booking::getId).collect(Collectors.toCollection(ArrayList::new)), BookingStatus.BLOCKED.getValue());
 
         Block savedEntity = blockRepository.save(dto.toEntity(property));
         return savedEntity.id;

@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 public class PropertyService {
     @Autowired
     PropertyRepository propertyRepository;
-    @Autowired
-    PropertyTeamMemberRepository propertyTeamMemberRepository;
 
     public Property getPropertyById(UUID propertyId){
         return propertyRepository.findById(propertyId).orElseThrow(() -> new EntityNotFoundException("Property not found"));
@@ -29,16 +27,17 @@ public class PropertyService {
     }
 
     public void updateProperty(PropertyDTO dto){
+        propertyRepository.findById(dto.getId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
         propertyRepository.save(dto.toEntity());
     }
 
     public void deleteProperty(UUID propertyId){
+        propertyRepository.findById(propertyId).orElseThrow(() -> new EntityNotFoundException("Property not found"));
         propertyRepository.deleteById(propertyId);
     }
 
     public UUID createProperty(PropertyDTO dto){
-        Property prop = dto.toEntity();
-        Property savedEntity = propertyRepository.save(prop);
+        Property savedEntity = propertyRepository.save(dto.toEntity());
         return savedEntity.id;
     }
 }

@@ -24,9 +24,18 @@ public class Block extends BaseEntity {
     @Column(name = "propertyId", updatable = false, insertable=false)
     public UUID propertyId;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "propertyTeamMemberId", referencedColumnName = "id")
+    public PropertyTeamMember propertyTeamMember;
+
+    @Column(name = "propertyId", updatable = false, insertable=false)
+    public UUID propertyTeamMemberId;
+
     public LocalDateTime startDateTime;
 
     public String reason;
+
+    public boolean isActive = true;
 
     public LocalDateTime endDateTime;
 
@@ -35,6 +44,7 @@ public class Block extends BaseEntity {
 
         dto.id = id;
         dto.propertyId = propertyId;
+        dto.propertyTeamMemberId = propertyTeamMemberId;
         dto.startDateTime = startDateTime;
         dto.reason = reason;
         dto.endDateTime = endDateTime;

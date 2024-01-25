@@ -2,6 +2,7 @@ package com.hostfully.bookingapi.models.dto.propertyteammember;
 
 import com.hostfully.bookingapi.enums.TeamMemberType;
 import com.hostfully.bookingapi.models.dto.BaseDTO;
+import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.models.entity.PropertyTeamMember;
 import lombok.Data;
 
@@ -13,12 +14,14 @@ import java.util.UUID;
 public class PropertyTeamMemberDTO extends BaseDTO {
     public String name;
     public UUID id;
+    public UUID propertyId;
     public TeamMemberType type;
 
-    public PropertyTeamMember toEntity(){
+    public PropertyTeamMember toEntity(Property property){
         PropertyTeamMember entity = new PropertyTeamMember();
 
         entity.id = id;
+        entity.property = property;
         entity.name = name;
         entity.type = type;
 

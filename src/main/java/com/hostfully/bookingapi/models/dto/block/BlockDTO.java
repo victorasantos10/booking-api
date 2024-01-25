@@ -15,6 +15,7 @@ import java.util.UUID;
 public class BlockDTO extends BaseDTO {
     public UUID id;
     public UUID propertyId;
+    public UUID propertyTeamMemberId;
     public String reason;
     public LocalDateTime startDateTime;
     public LocalDateTime endDateTime;

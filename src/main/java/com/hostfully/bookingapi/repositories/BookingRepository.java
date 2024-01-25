@@ -14,11 +14,6 @@ import java.util.UUID;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
-
-    //Filtering all active bookings by propertyId that are overlapping with the incoming booking dates
-    @Query("SELECT b from Booking where b.guestId = :guestId and b.propertyId = :propertyId and (b.startDateTime < :incomingEndDate and b.endDateTime > :incomingStartDate)")
-    Optional<Booking> findByGuestIdAndPropertyIdAndStartDateTimeAndEndDateTime(UUID guestId, UUID propertyId, LocalDateTime startDateTime, LocalDateTime endDateTime);
-
     @Query("UPDATE Booking b set b.status = :status where b.id in (:idList)")
     void updateBookingsStatus(ArrayList<UUID> idList, Integer status);
 

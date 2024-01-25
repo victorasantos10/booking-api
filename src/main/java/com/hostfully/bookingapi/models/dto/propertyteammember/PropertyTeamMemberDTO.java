@@ -23,7 +23,7 @@ public class PropertyTeamMemberDTO extends BaseDTO {
         entity.id = id;
         entity.setProperty(property);
         entity.name = name;
-        entity.type = type;
+        entity.type = type.getValue();
 
         if (entity.id == null) {
             // If id is null, it's a new entity

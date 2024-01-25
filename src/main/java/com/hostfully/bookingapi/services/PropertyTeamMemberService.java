@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PropertyTeamMemberService {
@@ -31,7 +32,7 @@ public class PropertyTeamMemberService {
     }
 
     public ArrayList<PropertyTeamMemberDTO> getAllTeamMembers(){
-        return new ArrayList<>(propertyTeamMemberRepository.findAll().stream().map(PropertyTeamMember::toDTO).toList());
+        return propertyTeamMemberRepository.findAll().stream().map(PropertyTeamMember::toDTO).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public void updatePropertyTeamMember(PropertyTeamMemberDTO dto){

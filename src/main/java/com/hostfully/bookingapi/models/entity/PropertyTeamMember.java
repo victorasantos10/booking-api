@@ -25,7 +25,7 @@ public class PropertyTeamMember extends BaseEntity {
     public UUID propertyId;
 
     public String name;
-    public TeamMemberType type;
+    public Integer type;
 
     public PropertyTeamMemberDTO toDTO(){
         PropertyTeamMemberDTO dto = new PropertyTeamMemberDTO();
@@ -33,7 +33,7 @@ public class PropertyTeamMember extends BaseEntity {
         dto.id = id;
         dto.propertyId = property.getId();
         dto.name = name;
-        dto.type = type;
+        dto.type = TeamMemberType.valueOf(type);
 
         return dto;
     }

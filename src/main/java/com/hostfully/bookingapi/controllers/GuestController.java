@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @RestController
@@ -16,10 +17,16 @@ public class GuestController {
     @Autowired
     GuestService guestService;
 
-    @GetMapping("{guestUUID}")
+    @GetMapping("/detail/{guestUUID}")
     public ResponseEntity<ApiResponseDTO<GuestDTO>> getGuestById(@PathVariable UUID guestUUID){
         return ResponseEntity.ok(new ApiResponseDTO<>(guestService.getGuestById(guestUUID)));
     }
+
+    @GetMapping
+    public ResponseEntity<ApiResponseDTO<ArrayList<GuestDTO>>> getGuestById(){
+        return ResponseEntity.ok(new ApiResponseDTO<>(guestService.getAllGuests()));
+    }
+
 
     @PostMapping()
     public ResponseEntity<ApiResponseDTO<UUID>> createGuest(@RequestBody GuestDTO guestDTO){

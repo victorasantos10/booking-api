@@ -24,6 +24,10 @@ public class PropertyService {
         return propertyRepository.findById(propertyId).orElseThrow(() -> new EntityNotFoundException("Property not found"));
     }
 
+    public ArrayList<PropertyDTO> getAllProperties(){
+        return new ArrayList<>(propertyRepository.findAll().stream().map(Property::toDTO).toList());
+    }
+
     public void updateProperty(PropertyDTO dto){
         propertyRepository.save(dto.toEntity());
     }

@@ -16,8 +16,6 @@ public class GuestDTO extends BaseDTO {
     public LocalDate dateOfBirth;
     public String email;
     public String phone;
-    public Integer adults;
-    public Integer children;
 
     public Guest toEntity(){
 
@@ -28,8 +26,6 @@ public class GuestDTO extends BaseDTO {
         entity.dateOfBirth = dateOfBirth;
         entity.email = email;
         entity.phone = phone;
-        entity.adults = adults;
-        entity.children = children;
 
 
         if (entity.id == null) {

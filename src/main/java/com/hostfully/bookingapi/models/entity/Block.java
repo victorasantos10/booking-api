@@ -14,11 +14,11 @@ import java.util.UUID;
 @Entity
 public class Block extends BaseEntity {
     @Id
-    public UUID id = UUID.randomUUID();
+    @GeneratedValue(strategy = GenerationType.UUID)
+    public UUID id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "Property")
-    @JoinColumn(name = "propertyId")
+    @JoinColumn(name = "propertyId", referencedColumnName = "id")
     public Property property;
 
     @Column(name = "propertyId", updatable = false, insertable=false)

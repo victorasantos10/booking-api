@@ -14,25 +14,27 @@ import java.util.UUID;
 @Entity
 public class Booking extends BaseEntity {
     @Id
-    public UUID id = UUID.randomUUID();
+    @GeneratedValue(strategy = GenerationType.UUID)
+    public UUID id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "Guest")
-    @JoinColumn(name = "guestId")
+    @JoinColumn(name = "guestId", referencedColumnName = "id")
     public Guest guest;
 
     @Column(name = "guestId", updatable = false, insertable=false)
     public UUID guestId;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "Property")
-    @JoinColumn(name = "propertyId")
+    @JoinColumn(name = "propertyId", referencedColumnName = "id")
     public Property property;
 
     @Column(name = "propertyId", updatable = false, insertable=false)
     public UUID propertyId;
 
-    public BookingStatus status;
+    public Integer adults;
+    public Integer children;
+
+    public Integer status;
 
     public LocalDateTime startDateTime;
 
@@ -44,12 +46,15 @@ public class Booking extends BaseEntity {
         dto.id = id;
         dto.startDateTime = startDateTime;
         dto.endDateTime = endDateTime;
-        dto.guestId = guestId;
-        dto.propertyId = propertyId;
-        dto.status = status;
+        dto.guestId = guest.getId();
+        dto.propertyId = property.getId();
+        dto.status = BookingStatus.valueOf(status);
+        dto.adults = adults;
+        dto.children = children;
         dto.createdDateTime = createdDateTime;
         dto.updatedDateTime = updatedDateTime;
 
         return dto;
     }
+
 }

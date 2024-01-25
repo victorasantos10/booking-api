@@ -18,9 +18,14 @@ public class PropertyController {
     @Autowired
     PropertyService propertyService;
 
-    @GetMapping("{propertyUUID}")
+    @GetMapping("/detail/{propertyUUID}")
     public ResponseEntity<ApiResponseDTO<PropertyDTO>> getProperty(@PathVariable UUID propertyUUID){
         return ResponseEntity.ok(new ApiResponseDTO<>(propertyService.getPropertyById(propertyUUID).toDTO()));
+    }
+
+    @GetMapping()
+    public ResponseEntity<ApiResponseDTO<ArrayList<PropertyDTO>>> getAllProperties(){
+        return ResponseEntity.ok(new ApiResponseDTO<>(propertyService.getAllProperties()));
     }
 
     @PostMapping()

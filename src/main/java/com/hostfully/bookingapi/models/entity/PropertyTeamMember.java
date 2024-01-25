@@ -13,7 +13,8 @@ import java.util.UUID;
 @Data
 public class PropertyTeamMember extends BaseEntity {
     @Id
-    public UUID id = UUID.randomUUID();
+    @GeneratedValue(strategy = GenerationType.UUID)
+    public UUID id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "Property")

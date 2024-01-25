@@ -4,6 +4,9 @@ import com.hostfully.bookingapi.enums.BookingStatus;
 import com.hostfully.bookingapi.helpers.ValidationHelpers;
 import com.hostfully.bookingapi.models.dto.BaseDTO;
 import com.hostfully.bookingapi.models.entity.Booking;
+import com.hostfully.bookingapi.models.entity.Guest;
+import com.hostfully.bookingapi.models.entity.Property;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -18,12 +21,18 @@ public class BookingDTO extends BaseDTO {
     public UUID propertyId;
     public LocalDateTime startDateTime;
     public LocalDateTime endDateTime;
+    public Integer adults;
+    public Integer children;
 
-    public Booking toEntity(){
+    public Booking toEntity(Property property, Guest guest){
         Booking entity = new Booking();
 
         entity.id = id;
-        entity.guestId = guestId;
+        entity.setProperty(property);
+        entity.setGuest(guest);
+        entity.status = status.getValue();
+        entity.adults = adults;
+        entity.children = children;
         entity.startDateTime = startDateTime;
         entity.endDateTime = endDateTime;
 

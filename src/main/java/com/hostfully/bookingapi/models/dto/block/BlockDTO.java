@@ -2,6 +2,7 @@ package com.hostfully.bookingapi.models.dto.block;
 import com.hostfully.bookingapi.models.dto.BaseDTO;
 import com.hostfully.bookingapi.models.entity.Block;
 import com.hostfully.bookingapi.models.entity.Booking;
+import com.hostfully.bookingapi.models.entity.Property;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,12 +20,12 @@ public class BlockDTO extends BaseDTO {
     public LocalDateTime endDateTime;
 
 
-    public Block toEntity(){
+    public Block toEntity(Property property){
         Block entity = new Block();
 
         entity.reason = reason;
         entity.id = id;
-        entity.propertyId = propertyId;
+        entity.property = property;
         entity.startDateTime = startDateTime;
         entity.endDateTime = endDateTime;
 

@@ -28,7 +28,7 @@ public class Block extends BaseEntity {
     @JoinColumn(name = "propertyTeamMemberId", referencedColumnName = "id")
     public PropertyTeamMember propertyTeamMember;
 
-    @Column(name = "propertyId", updatable = false, insertable=false)
+    @Column(name = "propertyTeamMemberId", updatable = false, insertable=false)
     public UUID propertyTeamMemberId;
 
     public LocalDateTime startDateTime;

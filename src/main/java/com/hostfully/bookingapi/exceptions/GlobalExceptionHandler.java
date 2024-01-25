@@ -2,6 +2,7 @@ package com.hostfully.bookingapi.exceptions;
 
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,11 +27,18 @@ public class GlobalExceptionHandler {
                 .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(exception.getMessage()))));
     }
 
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<Object> handleRuntimeException(DataIntegrityViolationException exception) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList("Dependent entities exist. Please remove or reassign them before attempting to delete this entity."))));
+    }
+
     @ExceptionHandler({RuntimeException.class})
     public ResponseEntity<Object> handleRuntimeException(RuntimeException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList(exception.getMessage()))));
+                .body(new ApiResponseDTO<>(null, new ArrayList<>(Arrays.asList("Oops! Something went wrong. Please contact support"))));
     }
 
 

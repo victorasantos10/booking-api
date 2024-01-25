@@ -21,7 +21,7 @@ public class PropertyTeamMemberDTO extends BaseDTO {
         PropertyTeamMember entity = new PropertyTeamMember();
 
         entity.id = id;
-        entity.property = property;
+        entity.setProperty(property);
         entity.name = name;
         entity.type = type;
 

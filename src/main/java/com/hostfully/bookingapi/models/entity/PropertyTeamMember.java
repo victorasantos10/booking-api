@@ -5,6 +5,7 @@ import com.hostfully.bookingapi.models.dto.propertyteammember.PropertyTeamMember
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -17,7 +18,6 @@ public class PropertyTeamMember extends BaseEntity {
     public UUID id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "Property")
     @JoinColumn(name = "propertyId")
     public Property property;
 

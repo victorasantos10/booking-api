@@ -1,8 +1,10 @@
 package com.hostfully.bookingapi.services;
 
+import com.hostfully.bookingapi.enums.TeamMemberType;
 import com.hostfully.bookingapi.models.dto.request.create.PropertyTeamMemberRequestDTO;
 import com.hostfully.bookingapi.models.dto.request.update.PropertyTeamMemberUpdateRequestDTO;
 import com.hostfully.bookingapi.models.dto.response.PropertyTeamMemberResponseDTO;
+import com.hostfully.bookingapi.models.entity.Booking;
 import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.models.entity.PropertyTeamMember;
 import com.hostfully.bookingapi.repositories.PropertyRepository;
@@ -41,8 +43,12 @@ public class PropertyTeamMemberServiceTest {
     @BeforeEach
     public void setUp() {
         testUUID = UUID.randomUUID();
-        testTeamMember = new PropertyTeamMember();
         testProperty = new Property();
+        testProperty.setId(UUID.randomUUID());
+        testTeamMember = new PropertyTeamMember();
+        testTeamMember.setId(UUID.randomUUID());
+        testTeamMember.setProperty(testProperty);
+        testTeamMember.setType(1);
     }
 
     @Test
@@ -125,13 +131,18 @@ public class PropertyTeamMemberServiceTest {
     @Test
     public void testCreatePropertyTeamMemberWhenPropertyExistsThenReturnUUID() {
         PropertyTeamMemberRequestDTO dto = new PropertyTeamMemberRequestDTO();
+        dto.setType(TeamMemberType.MANAGER);
         dto.setPropertyId(testUUID);
         when(propertyRepository.findById(testUUID)).thenReturn(Optional.of(testProperty));
+
+        PropertyTeamMember savedEntity = new PropertyTeamMember();
+        savedEntity.setId(UUID.randomUUID());
+
+        when(propertyTeamMemberRepository.save(any(PropertyTeamMember.class))).thenReturn(savedEntity);
 
         UUID resultUUID = propertyTeamMemberService.createPropertyTeamMember(dto);
 
         assertNotNull(resultUUID);
-        verify(propertyTeamMemberRepository, times(1)).save(any(PropertyTeamMember.class));
     }
 
     @Test

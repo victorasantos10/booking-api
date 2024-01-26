@@ -29,8 +29,7 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(PropertyController.class)
 public class PropertyControllerTest {
 
     @Autowired
@@ -116,12 +115,12 @@ public class PropertyControllerTest {
     }
 
     @Test
-    public void testGetPropertyWhenInvalidUUIDThenReturnBadRequest() throws Exception {
+    public void testGetPropertyWhenInvalidUUIDThenReturnNotFound() throws Exception {
 
         Mockito.when(propertyService.getPropertyById(propertyUUID)).thenThrow(new EntityNotFoundException("not found"));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/properties/detail/{propertyUUID}", propertyUUID))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test

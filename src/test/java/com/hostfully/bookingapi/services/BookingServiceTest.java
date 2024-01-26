@@ -24,6 +24,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.awt.print.Book;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -52,11 +53,23 @@ public class BookingServiceTest {
     private UUID bookingId;
     private Booking booking;
 
+    private Property property;
+
     @BeforeEach
     public void setUp() {
+        property = new Property();
+        property.setId(UUID.randomUUID());
+
         bookingId = UUID.randomUUID();
         booking = new Booking();
+
+        Guest guest = new Guest();
+        guest.setId(UUID.randomUUID());
+
         booking.setId(bookingId);
+        booking.setStatus(1);
+        booking.setGuest(guest);
+        booking.setProperty(property);
     }
 
     @Test
@@ -98,6 +111,10 @@ public class BookingServiceTest {
         dto.setAdults(1);
         dto.setChildren(0);
 
+        Booking savedEntity = new Booking();
+        savedEntity.setId(UUID.randomUUID());
+
+        when(bookingRepository.save(any(Booking.class))).thenReturn(savedEntity);
         when(propertyRepository.findById(dto.getPropertyId())).thenReturn(Optional.of(new Property()));
         when(guestRepository.findById(dto.getGuestId())).thenReturn(Optional.of(new Guest()));
         when(bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDate(), dto.getEndDate())).thenReturn(new ArrayList<>());
@@ -118,7 +135,10 @@ public class BookingServiceTest {
         dto.setAdults(1);
         dto.setChildren(0);
 
-        when(bookingRepository.findById(dto.getId())).thenReturn(Optional.of(new Booking()));
+        Booking foundBooking = new Booking();
+        foundBooking.setStatus(1);
+
+        when(bookingRepository.findById(dto.getId())).thenReturn(Optional.of(foundBooking));
         when(bookingRepository.findActiveOrRebookedBookingsWithinDate(booking.getPropertyId(), dto.getStartDate(), dto.getEndDate())).thenReturn(new ArrayList<>());
         when(blockRepository.findByPropertyIdAndIsActiveAndStartDateAndEndDate(booking.getPropertyId(), true, dto.getStartDate(), dto.getEndDate())).thenReturn(new ArrayList<>());
 

@@ -81,6 +81,7 @@ public class BlockServiceTest {
         blockUpdateRequestDTO.setId(blockUUID);
         blockUpdateRequestDTO.setStartDate(LocalDate.now().plusDays(1));
         blockUpdateRequestDTO.setEndDate(LocalDate.now().plusDays(2));
+        lenient().when(blockRepository.findById(blockUUID)).thenReturn(Optional.of(block));
     }
 
     @Test
@@ -102,8 +103,6 @@ public class BlockServiceTest {
 
     @Test
     public void testUpdateBlock() {
-        when(blockRepository.findById(blockUUID)).thenReturn(Optional.of(block));
-        when(bookingRepository.findActiveOrRebookedBookingsWithinDate(any(UUID.class), any(LocalDate.class), any(LocalDate.class))).thenReturn(new ArrayList<>());
 
         blockService.updateBlock(blockUpdateRequestDTO);
 

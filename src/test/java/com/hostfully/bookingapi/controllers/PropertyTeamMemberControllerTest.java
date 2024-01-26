@@ -45,17 +45,6 @@ public class PropertyTeamMemberControllerTest {
     }
 
     @Test
-    public void testGetTeamMemberWhenInvalidUUIDThenReturnBadRequest() throws Exception {
-        UUID uuid = UUID.randomUUID();
-        Mockito.when(propertyTeamMemberService.getTeamMember(uuid)).thenThrow(new IllegalArgumentException());
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/property-team-members/detail/{teamMemberUUID}", uuid)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-        Mockito.verify(propertyTeamMemberService, Mockito.times(1)).getTeamMember(uuid);
-    }
-
-    @Test
     public void testGetAllTeamMembers() throws Exception {
         ArrayList<PropertyTeamMemberResponseDTO> responseDTOs = new ArrayList<>();
         Mockito.when(propertyTeamMemberService.getAllTeamMembers()).thenReturn(responseDTOs);

@@ -1,9 +1,10 @@
 # Booking API
-A booking API to create reservations for guests in properties.
+A booking API to create reservations for guests in properties built in Java 21.
+
+##Requirements
+ - Java JDK 21
 
 ## Tools and frameworks used
-
- - Java 21
  - H2 as in-memory volatile DB
  - Maven
  - Spring Boot

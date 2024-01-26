@@ -28,7 +28,7 @@ public class GuestController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponseDTO<ArrayList<GuestResponseDTO>>> getGuestById(){
+    public ResponseEntity<ApiResponseDTO<ArrayList<GuestResponseDTO>>> getAllGuests(){
         return ResponseEntity.ok(new ApiResponseDTO<>(guestService.getAllGuests()));
     }
 

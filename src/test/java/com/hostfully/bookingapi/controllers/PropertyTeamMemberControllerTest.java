@@ -69,20 +69,22 @@ public class PropertyTeamMemberControllerTest {
 
         Mockito.verify(propertyTeamMemberService, Mockito.times(0)).createPropertyTeamMember(requestDTO);
     }
+
     @Test
     public void testCreatePropertyTeamMembers() throws Exception {
         PropertyTeamMemberRequestDTO requestDTO = new PropertyTeamMemberRequestDTO();
         UUID uuid = UUID.randomUUID();
         requestDTO.setName("Test");
+        requestDTO.setPropertyId(UUID.randomUUID());
         requestDTO.setType(TeamMemberType.MANAGER);
         Mockito.when(propertyTeamMemberService.createPropertyTeamMember(requestDTO)).thenReturn(uuid);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/property-team-members")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(requestDTO)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
-        Mockito.verify(propertyTeamMemberService, Mockito.times(0)).createPropertyTeamMember(requestDTO);
+        Mockito.verify(propertyTeamMemberService, Mockito.times(1)).createPropertyTeamMember(requestDTO);
     }
 
 

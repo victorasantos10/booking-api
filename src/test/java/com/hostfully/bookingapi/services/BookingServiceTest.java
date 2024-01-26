@@ -126,6 +126,103 @@ public class BookingServiceTest {
     }
 
     @Test
+    public void testCreateBookingWithOverlappingDatesForSameGuest() {
+        BookingRequestDTO dto = new BookingRequestDTO();
+        UUID guestId = UUID.randomUUID();
+        dto.setGuestId(guestId);
+        dto.setPropertyId(UUID.randomUUID());
+        dto.setStartDate(LocalDate.now());
+        dto.setEndDate(LocalDate.now().plusDays(1));
+        dto.setStatus(BookingStatus.ACTIVE);
+        dto.setAdults(1);
+        dto.setChildren(0);
+
+        ArrayList<Booking> overlappingBookingsForSameGuest = new ArrayList<>();
+        Booking overlapping = new Booking();
+        overlapping.setGuestId(guestId);
+
+        Guest currentGuest = new Guest();
+        currentGuest.setId(guestId);
+
+        overlappingBookingsForSameGuest.add(overlapping);
+
+        when(propertyRepository.findById(dto.getPropertyId())).thenReturn(Optional.of(new Property()));
+        when(guestRepository.findById(dto.getGuestId())).thenReturn(Optional.of(currentGuest));
+        when(bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDate(), dto.getEndDate())).thenReturn(overlappingBookingsForSameGuest);
+        when(blockRepository.findByPropertyIdAndIsActiveAndStartDateAndEndDate(dto.getPropertyId(), true, dto.getStartDate(), dto.getEndDate())).thenReturn(new ArrayList<>());
+
+        assertThrows(ExistingBookingException.class, () -> bookingService.createBooking(dto));
+    }
+
+    @Test
+    public void testUpdateBookingWithOverlappingDatesForSameGuest() {
+        BookingUpdateRequestDTO dto = new BookingUpdateRequestDTO();
+        UUID bookingId = UUID.randomUUID();
+        dto.setStartDate(LocalDate.now());
+        dto.setId(bookingId);
+        dto.setEndDate(LocalDate.now().plusDays(1));
+        dto.setStatus(BookingStatus.ACTIVE);
+        dto.setAdults(1);
+        dto.setChildren(0);
+
+        Booking savedEntity = new Booking();
+        UUID propertyId = UUID.randomUUID();
+        UUID guestId = UUID.randomUUID();
+        savedEntity.setId(bookingId);
+        savedEntity.setGuestId(guestId);
+        savedEntity.setStatus(1);
+        savedEntity.setPropertyId(propertyId);
+
+        ArrayList<Booking> overlappingBookingsForSameGuest = new ArrayList<>();
+        Booking overlapping = new Booking();
+        overlapping.setGuestId(guestId);
+
+        overlappingBookingsForSameGuest.add(overlapping);
+
+        when(bookingRepository.findById(dto.getId())).thenReturn(Optional.of(savedEntity));
+        when(bookingRepository.findActiveOrRebookedBookingsWithinDate(savedEntity.getPropertyId(), dto.getStartDate(), dto.getEndDate())).thenReturn(overlappingBookingsForSameGuest);
+        when(blockRepository.findByPropertyIdAndIsActiveAndStartDateAndEndDate(savedEntity.getPropertyId(), true, dto.getStartDate(), dto.getEndDate())).thenReturn(new ArrayList<>());
+
+        bookingService.updateBooking(dto);
+
+        verify(bookingRepository, times(1)).save(savedEntity);
+    }
+
+    @Test
+    public void testUpdateBookingWithCurrentBlock() {
+        BookingUpdateRequestDTO dto = new BookingUpdateRequestDTO();
+        UUID bookingId = UUID.randomUUID();
+        dto.setStartDate(LocalDate.now());
+        dto.setId(bookingId);
+        dto.setEndDate(LocalDate.now().plusDays(1));
+        dto.setStatus(BookingStatus.ACTIVE);
+        dto.setAdults(1);
+        dto.setChildren(0);
+
+        Booking savedEntity = new Booking();
+        UUID propertyId = UUID.randomUUID();
+        UUID guestId = UUID.randomUUID();
+        savedEntity.setId(bookingId);
+        savedEntity.setGuestId(guestId);
+        savedEntity.setStatus(1);
+        savedEntity.setPropertyId(propertyId);
+
+        ArrayList<Block> overlappingBlocks = new ArrayList<>();
+        Block overlapping = new Block();
+        overlapping.setReason("Maintenance");
+        overlapping.setReason("Maintenance");
+
+        overlappingBlocks.add(overlapping);
+
+        when(bookingRepository.findById(dto.getId())).thenReturn(Optional.of(savedEntity));
+        when(bookingRepository.findActiveOrRebookedBookingsWithinDate(savedEntity.getPropertyId(), dto.getStartDate(), dto.getEndDate())).thenReturn(new ArrayList<>());
+        when(blockRepository.findByPropertyIdAndIsActiveAndStartDateAndEndDate(savedEntity.getPropertyId(), true, dto.getStartDate(), dto.getEndDate())).thenReturn(overlappingBlocks);
+
+        verify(bookingRepository, times(0)).save(savedEntity);
+        assertThrows(ExistingBlockException.class, () -> bookingService.updateBooking(dto));
+    }
+
+    @Test
     public void testUpdateBooking() {
         BookingUpdateRequestDTO dto = new BookingUpdateRequestDTO();
         dto.setId(UUID.randomUUID());
@@ -145,5 +242,26 @@ public class BookingServiceTest {
         bookingService.updateBooking(dto);
 
         verify(bookingRepository, times(1)).save(any(Booking.class));
+    }
+
+    @Test
+    public void testUpdateBookingWithCurrentStatusCancelledAndUpdateStatusActive() {
+        BookingUpdateRequestDTO dto = new BookingUpdateRequestDTO();
+        dto.setId(UUID.randomUUID());
+        dto.setStartDate(LocalDate.now());
+        dto.setEndDate(LocalDate.now().plusDays(1));
+        dto.setStatus(BookingStatus.ACTIVE);
+        dto.setAdults(1);
+        dto.setChildren(0);
+
+        Booking foundBooking = new Booking();
+        foundBooking.setStatus(3);
+
+        when(bookingRepository.findById(dto.getId())).thenReturn(Optional.of(foundBooking));
+        when(bookingRepository.findActiveOrRebookedBookingsWithinDate(booking.getPropertyId(), dto.getStartDate(), dto.getEndDate())).thenReturn(new ArrayList<>());
+        when(blockRepository.findByPropertyIdAndIsActiveAndStartDateAndEndDate(booking.getPropertyId(), true, dto.getStartDate(), dto.getEndDate())).thenReturn(new ArrayList<>());
+
+        verify(bookingRepository, times(0)).save(any(Booking.class));
+        assertThrows(InvalidBookingOperation.class, () -> bookingService.updateBooking(dto));
     }
 }

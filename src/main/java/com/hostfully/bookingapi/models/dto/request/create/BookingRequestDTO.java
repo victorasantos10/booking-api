@@ -7,6 +7,7 @@ import com.hostfully.bookingapi.models.entity.Property;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,10 +25,12 @@ public class BookingRequestDTO {
     @Schema(example = "91b23fb9-d079-40aa-84e5-4c438ce99411")
     @NotNull(message = "Field is mandatory")
     private UUID propertyId;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @FutureOrPresent(message = "startDate cannot be in the past")
     @NotNull(message = "Field is mandatory")
     private LocalDate startDate;
     @FutureOrPresent(message = "endDate cannot be in the past")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Field is mandatory")
     private LocalDate endDate;
     @Min(value = 1, message = "It is required to have at least one adult")

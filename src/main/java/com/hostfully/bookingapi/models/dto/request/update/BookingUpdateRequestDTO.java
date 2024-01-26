@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,9 +21,11 @@ public class BookingUpdateRequestDTO {
     private UUID id;
     private BookingStatus status;
     @FutureOrPresent(message = "startDate cannot be in the past")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Field is mandatory")
     private LocalDate startDate;
     @FutureOrPresent(message = "endDate cannot be in the past")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Field is mandatory")
     private LocalDate endDate;
     @Min(value = 1, message = "It is required to have at least one adult")

@@ -24,7 +24,7 @@ public class PropertyTeamMemberUpdateRequestDTO {
 
     public PropertyTeamMember toEntityUpdate(PropertyTeamMember entity) {
         entity.setName(getName() != null ? getName() : entity.getName());
-        entity.setType(getType().getValue() != null ? getType().getValue() : entity.getType());
+        entity.setType(getType() != null ? getType().getValue() : entity.getType());
         entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
         return entity;

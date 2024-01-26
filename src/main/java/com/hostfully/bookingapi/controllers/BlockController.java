@@ -43,7 +43,7 @@ public class BlockController {
 
     @Operation(summary = "Create a new block for a property", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
     @PostMapping("{teamMemberUUID}")
-    public ResponseEntity<ApiResponseDTO<UUID>> createBlock(@PathVariable UUID teamMemberUUID, @RequestBody BlockRequestDTO blockDTO){
+    public ResponseEntity<ApiResponseDTO<UUID>> createBlock(@PathVariable UUID teamMemberUUID, @RequestBody @Valid BlockRequestDTO blockDTO){
         validateDateRange(blockDTO.getStartDate(), blockDTO.getEndDate());
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         return ResponseEntity.ok(new ApiResponseDTO<>(blockService.createBlock(teamMemberUUID, blockDTO)));

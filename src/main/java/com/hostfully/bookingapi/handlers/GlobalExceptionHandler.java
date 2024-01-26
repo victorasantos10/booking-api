@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -59,7 +60,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST).body(new ApiResponseDTO<>(null, errors));
     }
 
-    @ExceptionHandler({OverlappingDatesException.class, ExistingBookingException.class, ExistingBlockException.class, InvalidBookingOperation.class})
+    @ExceptionHandler({OverlappingDatesException.class, DateTimeParseException.class, ExistingBookingException.class, ExistingBlockException.class, InvalidBookingOperation.class})
     public ResponseEntity<Object> handleBusinessException(Exception exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

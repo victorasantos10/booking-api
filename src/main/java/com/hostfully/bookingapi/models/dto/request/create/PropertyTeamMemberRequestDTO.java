@@ -4,6 +4,7 @@ import com.hostfully.bookingapi.enums.TeamMemberType;
 import com.hostfully.bookingapi.models.dto.BaseResponseDTO;
 import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.models.entity.PropertyTeamMember;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -20,6 +21,7 @@ public class PropertyTeamMemberRequestDTO {
     @NotBlank(message = "Field is mandatory")
     public String name;
     @NotNull(message = "Field is mandatory")
+    @Schema(example = "91b23fb9-d079-40aa-84e5-4c438ce99411")
     public UUID propertyId;
     @NotNull(message = "Field is mandatory")
     public TeamMemberType type;

@@ -7,9 +7,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class BaseResponseDTO {
-
-    @Schema(hidden = true)
     protected LocalDateTime createdDateTime;
-    @Schema(hidden = true)
     protected LocalDateTime updatedDateTime;
 }

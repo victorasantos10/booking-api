@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,10 +30,12 @@ public class BlockRequestDTO {
     private String reason;
     @Schema(example = "2024-01-01T00:00")
     @FutureOrPresent(message = "startDate cannot be in the past")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Field is mandatory")
     private LocalDate startDate;
     @Schema(example = "2024-01-02T12:00")
     @FutureOrPresent(message = "endDate cannot be in the past")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Field is mandatory")
     private LocalDate endDate;
 

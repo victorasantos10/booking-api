@@ -35,6 +35,8 @@ public class PropertyTeamMember extends BaseEntity {
         dto.setPropertyId(getProperty().getId());
         dto.setName(getName());
         dto.setType(TeamMemberType.valueOf(type));
+        dto.setCreatedDateTime(getCreatedDateTime());
+        dto.setUpdatedDateTime(getUpdatedDateTime());
 
         return dto;
     }

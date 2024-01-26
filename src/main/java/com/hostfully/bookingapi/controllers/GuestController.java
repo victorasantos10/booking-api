@@ -22,7 +22,7 @@ public class GuestController {
     @Autowired
     GuestService guestService;
 
-    @GetMapping("/detail/{guestUUID}")
+    @GetMapping("/{guestUUID}")
     public ResponseEntity<ApiResponseDTO<GuestResponseDTO>> getGuestById(@PathVariable UUID guestUUID){
         return ResponseEntity.ok(new ApiResponseDTO<>(guestService.getGuestById(guestUUID)));
     }

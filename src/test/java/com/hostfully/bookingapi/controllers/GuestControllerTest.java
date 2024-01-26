@@ -45,7 +45,7 @@ public class GuestControllerTest {
 
         when(guestService.getGuestById(guestUUID)).thenReturn(guestResponseDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/guests/detail/{guestUUID}", guestUUID))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/guests/{guestUUID}", guestUUID))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value(guestUUID.toString()));
     }
@@ -56,7 +56,7 @@ public class GuestControllerTest {
 
         when(guestService.getGuestById(invalidGuestUUID)).thenThrow(new EntityNotFoundException("Not found"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/guests/detail/{guestUUID}", invalidGuestUUID))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/guests/{guestUUID}", invalidGuestUUID))
                 .andExpect(status().isNotFound());
 
         verify(guestService, times(1)).getGuestById(invalidGuestUUID);

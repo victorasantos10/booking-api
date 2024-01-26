@@ -95,7 +95,7 @@ public class BookingControllerTest {
     public void testGetBookingByIdWhenValidUUIDThenReturnBooking() throws Exception {
         when(bookingService.getBooking(validUUID)).thenReturn(bookingResponseDTO);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/bookings/detail/{bookingUUID}", validUUID)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/bookings/{bookingUUID}", validUUID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -107,7 +107,7 @@ public class BookingControllerTest {
     public void testGetBookingByIdWhenInvalidUUIDThenReturnNotFound() throws Exception {
         when(bookingService.getBooking(invalidUUID)).thenThrow(new EntityNotFoundException("Booking not found"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/bookings/detail/{bookingUUID}", invalidUUID)
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/bookings/{bookingUUID}", invalidUUID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 

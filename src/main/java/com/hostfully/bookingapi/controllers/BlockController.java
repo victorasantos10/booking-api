@@ -35,7 +35,7 @@ public class BlockController {
     PropertyTeamMemberService propertyTeamMemberService;
 
     @Operation(summary = "Get a block by ID", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
-    @GetMapping("{teamMemberUUID}/detail/{blockUUID}")
+    @GetMapping("{teamMemberUUID}/{blockUUID}")
     public ResponseEntity<ApiResponseDTO<BlockResponseDTO>> getBlockById(@PathVariable UUID teamMemberUUID, @PathVariable UUID blockUUID){
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         return ResponseEntity.ok(new ApiResponseDTO<>(blockService.getBlock(blockUUID)));

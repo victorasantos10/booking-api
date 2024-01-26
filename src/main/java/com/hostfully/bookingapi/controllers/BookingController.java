@@ -32,7 +32,7 @@ public class BookingController {
     BookingService bookingService;
 
     @Operation(summary = "Get a booking by ID")
-    @RequestMapping(method = RequestMethod.GET, value = "/detail/{bookingUUID}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{bookingUUID}")
     public ResponseEntity<ApiResponseDTO<BookingResponseDTO>> getBookingById(@PathVariable UUID bookingUUID){
         return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.getBooking(bookingUUID)));
     }

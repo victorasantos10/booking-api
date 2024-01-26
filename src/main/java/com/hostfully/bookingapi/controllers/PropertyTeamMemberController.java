@@ -21,7 +21,7 @@ public class PropertyTeamMemberController {
     @Autowired
     PropertyTeamMemberService propertyTeamMemberService;
 
-    @GetMapping("/detail/{teamMemberUUID}")
+    @GetMapping("/{teamMemberUUID}")
     public ResponseEntity<ApiResponseDTO<PropertyTeamMemberResponseDTO>> getTeamMember(@PathVariable UUID teamMemberUUID){
         return ResponseEntity.ok(new ApiResponseDTO<>(propertyTeamMemberService.getTeamMember(teamMemberUUID)));
     }

@@ -24,7 +24,7 @@ public class PropertyController {
     @Autowired
     PropertyService propertyService;
 
-    @GetMapping("/detail/{propertyUUID}")
+    @GetMapping("/{propertyUUID}")
     public ResponseEntity<ApiResponseDTO<PropertyResponseDTO>> getProperty(@PathVariable UUID propertyUUID){
         return ResponseEntity.ok(new ApiResponseDTO<>(propertyService.getPropertyById(propertyUUID)));
     }

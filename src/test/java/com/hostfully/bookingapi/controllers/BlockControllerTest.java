@@ -112,7 +112,7 @@ public class BlockControllerTest {
         doNothing().when(propertyTeamMemberService).validateTeamMember(any(UUID.class));
         when(blockService.getBlock(any(UUID.class))).thenReturn(blockResponseDTO);
 
-        mockMvc.perform(get("/api/blocks/{teamMemberUUID}/detail/{blockUUID}", teamMemberUUID, blockUUID)
+        mockMvc.perform(get("/api/blocks/{teamMemberUUID}/{blockUUID}", teamMemberUUID, blockUUID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

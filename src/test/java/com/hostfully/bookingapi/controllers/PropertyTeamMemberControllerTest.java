@@ -37,7 +37,7 @@ public class PropertyTeamMemberControllerTest {
         PropertyTeamMemberResponseDTO responseDTO = new PropertyTeamMemberResponseDTO();
         Mockito.when(propertyTeamMemberService.getTeamMember(uuid)).thenReturn(responseDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/property-team-members/detail/{teamMemberUUID}", uuid)
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/property-team-members/{teamMemberUUID}", uuid)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data").exists());

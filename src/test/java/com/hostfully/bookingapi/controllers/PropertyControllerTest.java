@@ -108,7 +108,7 @@ public class PropertyControllerTest {
 
         Mockito.when(propertyService.getPropertyById(propertyUUID)).thenReturn(propertyResponseDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/properties/detail/{propertyUUID}", propertyUUID))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/properties/{propertyUUID}", propertyUUID))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value(propertyUUID.toString()));
@@ -119,7 +119,7 @@ public class PropertyControllerTest {
 
         Mockito.when(propertyService.getPropertyById(propertyUUID)).thenThrow(new EntityNotFoundException("not found"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/properties/detail/{propertyUUID}", propertyUUID))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/properties/{propertyUUID}", propertyUUID))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -129,7 +129,7 @@ public class PropertyControllerTest {
 
         Mockito.when(propertyService.getPropertyById(nonExistentUUID)).thenThrow(new EntityNotFoundException("Property not found"));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/properties/detail/{propertyUUID}", nonExistentUUID))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/properties/{propertyUUID}", nonExistentUUID))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

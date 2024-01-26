@@ -3,7 +3,9 @@ A booking API to create reservations for guests in properties.
 
 ## Tools and frameworks used
 
+ - Java 21
  - H2 as in-memory volatile DB
+ - Maven
  - Spring Boot
  - Lombok
  - JUnit
@@ -21,6 +23,12 @@ A booking API to create reservations for guests in properties.
  - Detailed description of the API on Swagger
 
 ## How to use
+
+This application uses maven, so we need to first build the project by running
+
+```mvn package```
+
+Then, just start the `BookingApiApplication` Spring Boot application
 
 The application will start at `http://localhost:8080`. then, please navigate to `http://localhost:8080/swagger-ui/index.html` to view the API docs and start testing
 

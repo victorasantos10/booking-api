@@ -1,5 +1,5 @@
 # Booking API
-A simple booking API to create reservations for guests in properties.
+A booking API to create reservations for guests in properties.
 
 ## Tools and frameworks used
 

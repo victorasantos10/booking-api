@@ -1,9 +1,6 @@
 package com.hostfully.bookingapi.handlers;
 
-import com.hostfully.bookingapi.exceptions.ExistingBlockException;
-import com.hostfully.bookingapi.exceptions.ExistingBookingException;
-import com.hostfully.bookingapi.exceptions.InvalidDateRangeException;
-import com.hostfully.bookingapi.exceptions.OverlappingDatesException;
+import com.hostfully.bookingapi.exceptions.*;
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
 import com.hostfully.bookingapi.models.validation.ApiResponseErrorModel;
 import com.hostfully.bookingapi.models.validation.ApiValidationResponseErrorModel;
@@ -47,13 +44,22 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponseDTO<Map<String,String>>> handleInvalidDateRangeException(
             InvalidDateRangeException ex) {
         ArrayList<ApiResponseErrorModel> errors = new ArrayList<>();
-        errors.add(new ApiResponseErrorModel("startDateTime", "startDateTime should be before endDateTime"));
-        errors.add(new ApiResponseErrorModel("endDateTime", "endDateTime should be after startDateTime"));
+        errors.add(new ApiResponseErrorModel("startDate", "startDate should be before endDate"));
+        errors.add(new ApiResponseErrorModel("endDate", "endDate should be after startDate"));
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST).body(new ApiResponseDTO<>(null, errors));
     }
 
-    @ExceptionHandler({OverlappingDatesException.class, ExistingBookingException.class, ExistingBlockException.class})
+    @ExceptionHandler(DateTimeIntervalTooShortException.class)
+    public ResponseEntity<ApiResponseDTO<Map<String,String>>> handleDateTimeIntervalTooShortException(
+            DateTimeIntervalTooShortException ex) {
+        ArrayList<ApiResponseErrorModel> errors = new ArrayList<>();
+        errors.add(new ApiResponseErrorModel("startDate", ex.getMessage()));
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST).body(new ApiResponseDTO<>(null, errors));
+    }
+
+    @ExceptionHandler({OverlappingDatesException.class, ExistingBookingException.class, ExistingBlockException.class, InvalidBookingOperation.class})
     public ResponseEntity<Object> handleBusinessException(Exception exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

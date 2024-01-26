@@ -7,11 +7,11 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static com.hostfully.bookingapi.helpers.DateHelpers.truncateAndSetToUTC;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -25,13 +25,13 @@ public class BlockDTO extends BaseDTO {
     @NotBlank(message = "Field is mandatory")
     private String reason;
     @Schema(example = "2024-01-01T00:00")
-    @FutureOrPresent(message = "startDateTime cannot be in the past")
+    @FutureOrPresent(message = "startDate cannot be in the past")
     @NotNull(message = "Field is mandatory")
-    private LocalDateTime startDateTime;
+    private LocalDate startDate;
     @Schema(example = "2024-01-02T12:00")
-    @FutureOrPresent(message = "endDateTime cannot be in the past")
+    @FutureOrPresent(message = "endDate cannot be in the past")
     @NotNull(message = "Field is mandatory")
-    private LocalDateTime endDateTime;
+    private LocalDate endDate;
 
 
     public Block toEntity(Property property, PropertyTeamMember propertyTeamMember){
@@ -40,8 +40,8 @@ public class BlockDTO extends BaseDTO {
         entity.setReason(getReason());
         entity.setProperty(property);
         entity.setPropertyTeamMember(propertyTeamMember);
-        entity.setStartDateTime(truncateAndSetToUTC(getStartDateTime()));
-        entity.setEndDateTime(truncateAndSetToUTC(getEndDateTime()));
+        entity.setStartDate(getStartDate());
+        entity.setEndDate(getEndDate());
         entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
         return entity;
@@ -49,8 +49,8 @@ public class BlockDTO extends BaseDTO {
 
     public Block toEntityUpdate(Block entity){
         entity.setReason(getReason() != null ? getReason() : entity.getReason());
-        entity.setStartDateTime(getStartDateTime() != null ? truncateAndSetToUTC(getStartDateTime()) : truncateAndSetToUTC(entity.getStartDateTime()));
-        entity.setEndDateTime(getEndDateTime() != null ? truncateAndSetToUTC(getEndDateTime()) : truncateAndSetToUTC(entity.getEndDateTime()));
+        entity.setStartDate(getStartDate() != null ? getStartDate() : entity.getStartDate());
+        entity.setEndDate(getEndDate() != null ? getEndDate() : entity.getEndDate());
         entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
         return entity;

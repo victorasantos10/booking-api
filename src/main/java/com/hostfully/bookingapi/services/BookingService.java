@@ -3,6 +3,7 @@ package com.hostfully.bookingapi.services;
 import com.hostfully.bookingapi.enums.BookingStatus;
 import com.hostfully.bookingapi.exceptions.ExistingBlockException;
 import com.hostfully.bookingapi.exceptions.ExistingBookingException;
+import com.hostfully.bookingapi.exceptions.InvalidBookingOperation;
 import com.hostfully.bookingapi.exceptions.OverlappingDatesException;
 import com.hostfully.bookingapi.models.dto.BookingDTO;
 import com.hostfully.bookingapi.models.entity.Block;
@@ -63,12 +64,13 @@ public class BookingService {
         guestRepository.findById(dto.getGuestId()).orElseThrow(() -> new EntityNotFoundException("Guest not found"));
         Booking booking = bookingRepository.findById(dto.getId()).orElseThrow(() -> new EntityNotFoundException("Booking not found"));
 
-        ArrayList<Booking> datesOverlapping = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDateTime(), dto.getEndDateTime());
-        Block blockOverlapping = blockRepository.findByPropertyIdAndIsActiveAndStartDateTimeAndEndDateTime(dto.getPropertyId(), true, dto.getStartDateTime(), dto.getEndDateTime());
+        ArrayList<Booking> datesOverlapping = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDate(), dto.getEndDate());
+        Block blockOverlapping = blockRepository.findByPropertyIdAndIsActiveAndStartDateAndEndDate(dto.getPropertyId(), true, dto.getStartDate(), dto.getEndDate());
+
 
         if(!datesOverlapping.isEmpty()){
             //providing a more friendly message if user already has a booking
-            if(datesOverlapping.stream().anyMatch(item -> item.getGuestId() == dto.getGuestId())){
+            if(datesOverlapping.stream().anyMatch(item -> item.getGuestId().equals(dto.getGuestId()))){
                 throw new ExistingBookingException("You already have an existing booking for the same property in the same date");
             }
             throw new OverlappingDatesException("The property isn't available at those dates. Please select another date range.");
@@ -77,16 +79,21 @@ public class BookingService {
         if(blockOverlapping != null){
             throw new ExistingBlockException("The property is currently blocked. Reason: " + blockOverlapping.getReason());
         }
+
+        if(BookingStatus.valueOf(booking.getStatus()) == BookingStatus.BLOCKED || BookingStatus.valueOf(booking.getStatus()) == BookingStatus.CANCELLED
+            && dto.getStatus() == BookingStatus.ACTIVE){
+            throw new InvalidBookingOperation("A blocked or cancelled booking can't be set to ACTIVE. Please set it to REBOOKED instead");
+        }
         bookingRepository.save(dto.toEntityUpdate(booking));
     }
 
     private void validateBooking(BookingDTO dto) {
-        ArrayList<Booking> datesOverlapping = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDateTime(), dto.getEndDateTime());
-        Block blockOverlapping = blockRepository.findByPropertyIdAndIsActiveAndStartDateTimeAndEndDateTime(dto.getPropertyId(), true, dto.getStartDateTime(), dto.getEndDateTime());
+        ArrayList<Booking> datesOverlapping = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDate(), dto.getEndDate());
+        Block blockOverlapping = blockRepository.findByPropertyIdAndIsActiveAndStartDateAndEndDate(dto.getPropertyId(), true, dto.getStartDate(), dto.getEndDate());
 
         if(!datesOverlapping.isEmpty()){
             //providing a more friendly message if user already has a booking
-            if(datesOverlapping.stream().anyMatch(item -> item.getGuestId() == dto.getGuestId())){
+            if(datesOverlapping.stream().anyMatch(item -> item.getGuestId().equals(dto.getGuestId()))){
                 throw new ExistingBookingException("You already have an existing booking for the same property in the same date");
             }
             throw new OverlappingDatesException("The property isn't available at those dates. Please select another date range.");

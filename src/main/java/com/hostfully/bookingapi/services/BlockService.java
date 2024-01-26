@@ -50,7 +50,7 @@ public class BlockService {
         PropertyTeamMember propertyTeamMember = propertyTeamMemberRepository.findById(teamMemberUUID).orElseThrow(() -> new EntityNotFoundException("Team member not found"));
 
         //If there are any bookings in that date, set them as blocked.
-        ArrayList<Booking> activeBookings = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDateTime(), dto.getEndDateTime());
+        ArrayList<Booking> activeBookings = bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDate(), dto.getEndDate());
         bookingRepository.updateBookingsStatus(activeBookings.stream().map(Booking::getId).collect(Collectors.toCollection(ArrayList::new)), BookingStatus.BLOCKED.getValue());
 
         Block savedEntity = blockRepository.save(dto.toEntity(property, propertyTeamMember));

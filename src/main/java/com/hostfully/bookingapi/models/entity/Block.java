@@ -4,6 +4,7 @@ import com.hostfully.bookingapi.models.dto.BlockDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -30,22 +31,22 @@ public class Block extends BaseEntity {
     @Column(name = "createdByPropertyTeamMemberId", updatable = false, insertable=false)
     private UUID propertyTeamMemberId;
 
-    private LocalDateTime startDateTime;
+    private LocalDate startDate;
 
     private String reason;
 
     private boolean isActive = true;
 
-    private LocalDateTime endDateTime;
+    private LocalDate endDate;
 
     public BlockDTO toDTO(){
         BlockDTO dto = new BlockDTO();
 
         dto.setId(getId());
         dto.setPropertyId(getPropertyId());
-        dto.setStartDateTime(getStartDateTime());
+        dto.setStartDate(getStartDate());
         dto.setReason(getReason());
-        dto.setEndDateTime(getEndDateTime());
+        dto.setEndDate(getEndDate());
         dto.setCreatedDateTime(getCreatedDateTime());
         dto.setUpdatedDateTime(getUpdatedDateTime());
 

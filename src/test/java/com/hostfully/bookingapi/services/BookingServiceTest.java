@@ -3,7 +3,6 @@ package com.hostfully.bookingapi.services;
 import com.hostfully.bookingapi.enums.BookingStatus;
 import com.hostfully.bookingapi.exceptions.ExistingBlockException;
 import com.hostfully.bookingapi.exceptions.ExistingBookingException;
-import com.hostfully.bookingapi.exceptions.OverlappingDatesException;
 import com.hostfully.bookingapi.models.dto.BookingDTO;
 import com.hostfully.bookingapi.models.entity.Block;
 import com.hostfully.bookingapi.models.entity.Booking;
@@ -21,7 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
@@ -59,8 +58,8 @@ public class BookingServiceTest {
         bookingDTO.setGuestId(UUID.randomUUID());
         bookingDTO.setPropertyId(UUID.randomUUID());
         bookingDTO.setStatus(BookingStatus.ACTIVE);
-        bookingDTO.setStartDateTime(LocalDateTime.now());
-        bookingDTO.setEndDateTime(LocalDateTime.now().plusDays(1));
+        bookingDTO.setStartDate(LocalDate.now());
+        bookingDTO.setEndDate(LocalDate.now().plusDays(1));
 
         booking = new Booking();
         booking.setId(bookingDTO.getId());
@@ -108,7 +107,7 @@ public class BookingServiceTest {
     public void testCreateBookingWhenBookingOverlapsExistingBookingThenExistingBookingExceptionIsThrown() {
         when(propertyRepository.findById(bookingDTO.getPropertyId())).thenReturn(Optional.of(property));
         when(guestRepository.findById(bookingDTO.getGuestId())).thenReturn(Optional.of(guest));
-        when(bookingRepository.findActiveOrRebookedBookingsWithinDate(any(UUID.class), any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(new ArrayList<>(Arrays.asList(booking)));
+        when(bookingRepository.findActiveOrRebookedBookingsWithinDate(any(UUID.class), any(LocalDate.class), any(LocalDate.class))).thenReturn(new ArrayList<>(Arrays.asList(booking)));
 
         assertThrows(ExistingBookingException.class, () -> bookingService.createBooking(bookingDTO));
     }
@@ -117,7 +116,7 @@ public class BookingServiceTest {
     public void testCreateBookingWhenBookingOverlapsExistingBlockThenExistingBlockExceptionIsThrown() {
         when(propertyRepository.findById(bookingDTO.getPropertyId())).thenReturn(Optional.of(property));
         when(guestRepository.findById(bookingDTO.getGuestId())).thenReturn(Optional.of(guest));
-        when(blockRepository.findByPropertyIdAndIsActiveAndStartDateTimeAndEndDateTime(any(UUID.class), anyBoolean(), any(LocalDateTime.class), any(LocalDateTime.class))).thenReturn(new Block());
+        when(blockRepository.findByPropertyIdAndIsActiveAndStartDateAndEndDate(any(UUID.class), anyBoolean(), any(LocalDate.class), any(LocalDate.class))).thenReturn(new Block());
 
         assertThrows(ExistingBlockException.class, () -> bookingService.createBooking(bookingDTO));
     }

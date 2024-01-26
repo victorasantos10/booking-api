@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,6 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     @Query("UPDATE Booking b set b.status = :status where b.id in (:idList)")
     void updateBookingsStatus(ArrayList<UUID> idList, Integer status);
 
-    @Query("SELECT b FROM Booking b WHERE b.status in (1,2) and b.propertyId = :propertyId and (b.startDateTime < :incomingEndDate and b.endDateTime > :incomingStartDate)")
-    ArrayList<Booking> findActiveOrRebookedBookingsWithinDate(UUID propertyId, LocalDateTime incomingStartDate, LocalDateTime incomingEndDate);
+    @Query("SELECT b FROM Booking b WHERE b.status in (1,2) and b.propertyId = :propertyId and (b.startDate <= :incomingEndDate and b.endDate >= :incomingStartDate)")
+    ArrayList<Booking> findActiveOrRebookedBookingsWithinDate(UUID propertyId, LocalDate incomingStartDate, LocalDate incomingEndDate);
 }

@@ -5,7 +5,7 @@ import com.hostfully.bookingapi.models.dto.BookingDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
@@ -36,16 +36,16 @@ public class Booking extends BaseEntity {
 
     private Integer status;
 
-    private LocalDateTime startDateTime;
+    private LocalDate startDate;
 
-    private LocalDateTime endDateTime;
+    private LocalDate endDate;
 
     public BookingDTO toDTO(){
         BookingDTO dto = new BookingDTO();
 
         dto.setId(getId());
-        dto.setStartDateTime(getStartDateTime());
-        dto.setEndDateTime(getEndDateTime());
+        dto.setStartDate(getStartDate());
+        dto.setEndDate(getEndDate());
         dto.setGuestId(getGuest().getId());
         dto.setPropertyId(getProperty().getId());
         dto.setStatus(BookingStatus.valueOf(status));

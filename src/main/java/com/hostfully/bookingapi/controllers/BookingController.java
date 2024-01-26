@@ -38,14 +38,14 @@ public class BookingController {
     @Operation(summary = "Create a booking")
     @PostMapping()
     public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody @Valid BookingDTO bookingDto){
-        validateDateRange(bookingDto.getStartDateTime(), bookingDto.getEndDateTime());
+        validateDateRange(bookingDto.getStartDate(), bookingDto.getEndDate());
         return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(bookingDto)));
     }
 
     @Operation(summary = "Update a booking")
     @PutMapping()
     public ResponseEntity updateBooking(@RequestBody @Valid BookingDTO bookingDto) {
-        validateDateRange(bookingDto.getStartDateTime(), bookingDto.getEndDateTime());
+        validateDateRange(bookingDto.getStartDate(), bookingDto.getEndDate());
         bookingService.updateBooking(bookingDto);
         return ResponseEntity.ok().build();
     }

@@ -1,7 +1,9 @@
 package com.hostfully.bookingapi.controllers;
 
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
-import com.hostfully.bookingapi.models.dto.GuestDTO;
+import com.hostfully.bookingapi.models.dto.request.create.GuestRequestDTO;
+import com.hostfully.bookingapi.models.dto.request.update.GuestUpdateRequestDTO;
+import com.hostfully.bookingapi.models.dto.response.GuestResponseDTO;
 import com.hostfully.bookingapi.services.GuestService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -21,23 +23,23 @@ public class GuestController {
     GuestService guestService;
 
     @GetMapping("/detail/{guestUUID}")
-    public ResponseEntity<ApiResponseDTO<GuestDTO>> getGuestById(@PathVariable UUID guestUUID){
+    public ResponseEntity<ApiResponseDTO<GuestResponseDTO>> getGuestById(@PathVariable UUID guestUUID){
         return ResponseEntity.ok(new ApiResponseDTO<>(guestService.getGuestById(guestUUID)));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponseDTO<ArrayList<GuestDTO>>> getGuestById(){
+    public ResponseEntity<ApiResponseDTO<ArrayList<GuestResponseDTO>>> getGuestById(){
         return ResponseEntity.ok(new ApiResponseDTO<>(guestService.getAllGuests()));
     }
 
 
     @PostMapping()
-    public ResponseEntity<ApiResponseDTO<UUID>> createGuest(@RequestBody @Valid GuestDTO guestDTO){
+    public ResponseEntity<ApiResponseDTO<UUID>> createGuest(@RequestBody @Valid GuestRequestDTO guestDTO){
         return ResponseEntity.ok(new ApiResponseDTO<>(guestService.createGuest(guestDTO)));
     }
 
     @PutMapping()
-    public ResponseEntity updateGuest(@RequestBody @Valid GuestDTO guestDTO){
+    public ResponseEntity updateGuest(@RequestBody @Valid GuestUpdateRequestDTO guestDTO){
         guestService.updateGuest(guestDTO);
         return ResponseEntity.ok().build();
     }

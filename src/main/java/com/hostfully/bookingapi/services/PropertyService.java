@@ -1,6 +1,8 @@
 package com.hostfully.bookingapi.services;
 
-import com.hostfully.bookingapi.models.dto.PropertyDTO;
+import com.hostfully.bookingapi.models.dto.request.create.PropertyRequestDTO;
+import com.hostfully.bookingapi.models.dto.request.update.PropertyUpdateRequestDTO;
+import com.hostfully.bookingapi.models.dto.response.PropertyResponseDTO;
 import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.repositories.PropertyRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,15 +17,16 @@ public class PropertyService {
     @Autowired
     PropertyRepository propertyRepository;
 
-    public Property getPropertyById(UUID propertyId){
-        return propertyRepository.findById(propertyId).orElseThrow(() -> new EntityNotFoundException("Property not found"));
+    public PropertyResponseDTO getPropertyById(UUID propertyId){
+        Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new EntityNotFoundException("Property not found"));
+        return property.toDTO();
     }
 
-    public ArrayList<PropertyDTO> getAllProperties(){
+    public ArrayList<PropertyResponseDTO> getAllProperties(){
         return new ArrayList<>(propertyRepository.findAll().stream().map(Property::toDTO).toList());
     }
 
-    public void updateProperty(PropertyDTO dto){
+    public void updateProperty(PropertyUpdateRequestDTO dto){
         Property property = propertyRepository.findById(dto.getId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
         propertyRepository.save(dto.toEntityUpdate(property));
     }
@@ -33,7 +36,7 @@ public class PropertyService {
         propertyRepository.deleteById(propertyId);
     }
 
-    public UUID createProperty(PropertyDTO dto){
+    public UUID createProperty(PropertyRequestDTO dto){
         Property savedEntity = propertyRepository.save(dto.toEntity());
         return savedEntity.id;
     }

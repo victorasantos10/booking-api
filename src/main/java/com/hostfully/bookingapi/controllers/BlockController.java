@@ -1,7 +1,9 @@
 package com.hostfully.bookingapi.controllers;
 
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
-import com.hostfully.bookingapi.models.dto.BlockDTO;
+import com.hostfully.bookingapi.models.dto.request.create.BlockRequestDTO;
+import com.hostfully.bookingapi.models.dto.request.update.BlockUpdateRequestDTO;
+import com.hostfully.bookingapi.models.dto.response.BlockResponseDTO;
 import com.hostfully.bookingapi.services.BlockService;
 import com.hostfully.bookingapi.services.PropertyTeamMemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,14 +36,14 @@ public class BlockController {
 
     @Operation(summary = "Get a block by ID", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
     @GetMapping("{teamMemberUUID}/detail/{blockUUID}")
-    public ResponseEntity<ApiResponseDTO<BlockDTO>> getBlockById(@PathVariable UUID teamMemberUUID, @PathVariable UUID blockUUID){
+    public ResponseEntity<ApiResponseDTO<BlockResponseDTO>> getBlockById(@PathVariable UUID teamMemberUUID, @PathVariable UUID blockUUID){
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         return ResponseEntity.ok(new ApiResponseDTO<>(blockService.getBlock(blockUUID)));
     }
 
     @Operation(summary = "Create a new block for a property", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
     @PostMapping("{teamMemberUUID}")
-    public ResponseEntity<ApiResponseDTO<UUID>> createBlock(@PathVariable UUID teamMemberUUID, @RequestBody BlockDTO blockDTO){
+    public ResponseEntity<ApiResponseDTO<UUID>> createBlock(@PathVariable UUID teamMemberUUID, @RequestBody BlockRequestDTO blockDTO){
         validateDateRange(blockDTO.getStartDate(), blockDTO.getEndDate());
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         return ResponseEntity.ok(new ApiResponseDTO<>(blockService.createBlock(teamMemberUUID, blockDTO)));
@@ -49,7 +51,7 @@ public class BlockController {
 
     @Operation(summary = "Update property block", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
     @PutMapping("{teamMemberUUID}")
-    public ResponseEntity updateBlock(@PathVariable UUID teamMemberUUID, @RequestBody @Valid BlockDTO blockDTO){
+    public ResponseEntity updateBlock(@PathVariable UUID teamMemberUUID, @RequestBody @Valid BlockUpdateRequestDTO blockDTO){
         validateDateRange(blockDTO.getStartDate(), blockDTO.getEndDate());
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         blockService.updateBlock(blockDTO);

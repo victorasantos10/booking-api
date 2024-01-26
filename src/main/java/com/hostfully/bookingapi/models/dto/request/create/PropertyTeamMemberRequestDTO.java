@@ -1,7 +1,7 @@
-package com.hostfully.bookingapi.models.dto;
+package com.hostfully.bookingapi.models.dto.request.create;
 
 import com.hostfully.bookingapi.enums.TeamMemberType;
-import com.hostfully.bookingapi.models.dto.BaseDTO;
+import com.hostfully.bookingapi.models.dto.BaseResponseDTO;
 import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.models.entity.PropertyTeamMember;
 import jakarta.validation.constraints.NotBlank;
@@ -14,12 +14,11 @@ import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Data
-public class PropertyTeamMemberDTO extends BaseDTO {
+public class PropertyTeamMemberRequestDTO {
     @Size(min = 1, message = "Name too short")
     @Size(max = 255, message = "Name too long")
     @NotBlank(message = "Field is mandatory")
     public String name;
-    public UUID id;
     @NotNull(message = "Field is mandatory")
     public UUID propertyId;
     @NotNull(message = "Field is mandatory")
@@ -32,15 +31,6 @@ public class PropertyTeamMemberDTO extends BaseDTO {
         entity.setName(getName());
         entity.setType(getType().getValue());
         entity.setCreatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
-
-        return entity;
-    }
-
-    public PropertyTeamMember toEntityUpdate(PropertyTeamMember entity, Property property) {
-        entity.setProperty(property);
-        entity.setName(getName() != null ? getName() : entity.getName());
-        entity.setType(getType().getValue() != null ? getType().getValue() : entity.getType());
-        entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));
 
         return entity;
     }

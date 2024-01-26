@@ -1,7 +1,7 @@
 package com.hostfully.bookingapi.models.entity;
 
 import com.hostfully.bookingapi.enums.BookingStatus;
-import com.hostfully.bookingapi.models.dto.BookingDTO;
+import com.hostfully.bookingapi.models.dto.response.BookingResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,8 +40,8 @@ public class Booking extends BaseEntity {
 
     private LocalDate endDate;
 
-    public BookingDTO toDTO(){
-        BookingDTO dto = new BookingDTO();
+    public BookingResponseDTO toDTO(){
+        BookingResponseDTO dto = new BookingResponseDTO();
 
         dto.setId(getId());
         dto.setStartDate(getStartDate());

@@ -1,11 +1,10 @@
 package com.hostfully.bookingapi.models.entity;
 
-import com.hostfully.bookingapi.models.dto.BlockDTO;
+import com.hostfully.bookingapi.models.dto.response.BlockResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
@@ -39,8 +38,8 @@ public class Block extends BaseEntity {
 
     private LocalDate endDate;
 
-    public BlockDTO toDTO(){
-        BlockDTO dto = new BlockDTO();
+    public BlockResponseDTO toDTO(){
+        BlockResponseDTO dto = new BlockResponseDTO();
 
         dto.setId(getId());
         dto.setPropertyId(getPropertyId());

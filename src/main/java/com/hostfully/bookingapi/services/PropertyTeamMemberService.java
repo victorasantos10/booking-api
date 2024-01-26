@@ -1,6 +1,8 @@
 package com.hostfully.bookingapi.services;
 
-import com.hostfully.bookingapi.models.dto.PropertyTeamMemberDTO;
+import com.hostfully.bookingapi.models.dto.request.create.PropertyTeamMemberRequestDTO;
+import com.hostfully.bookingapi.models.dto.request.update.PropertyTeamMemberUpdateRequestDTO;
+import com.hostfully.bookingapi.models.dto.response.PropertyTeamMemberResponseDTO;
 import com.hostfully.bookingapi.models.entity.Property;
 import com.hostfully.bookingapi.models.entity.PropertyTeamMember;
 import com.hostfully.bookingapi.repositories.PropertyRepository;
@@ -26,18 +28,17 @@ public class PropertyTeamMemberService {
         propertyTeamMemberRepository.findById(teamMemberUUID).orElseThrow(() -> new EntityNotFoundException("Team member not found"));
     }
 
-    public PropertyTeamMemberDTO getTeamMember(UUID teamMemberUUID){
+    public PropertyTeamMemberResponseDTO getTeamMember(UUID teamMemberUUID){
         return propertyTeamMemberRepository.findById(teamMemberUUID).orElseThrow(() -> new EntityNotFoundException("Team member not found")).toDTO();
     }
 
-    public ArrayList<PropertyTeamMemberDTO> getAllTeamMembers(){
+    public ArrayList<PropertyTeamMemberResponseDTO> getAllTeamMembers(){
         return propertyTeamMemberRepository.findAll().stream().map(PropertyTeamMember::toDTO).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void updatePropertyTeamMember(PropertyTeamMemberDTO dto){
-        Property property = propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
+    public void updatePropertyTeamMember(PropertyTeamMemberUpdateRequestDTO dto){
         PropertyTeamMember teamMember = propertyTeamMemberRepository.findById(dto.getId()).orElseThrow(() -> new EntityNotFoundException("Team member not found"));
-        propertyTeamMemberRepository.save(dto.toEntityUpdate(teamMember, property));
+        propertyTeamMemberRepository.save(dto.toEntityUpdate(teamMember));
     }
 
     public void deletePropertyTeamMember(UUID teamMemberUUID){
@@ -45,7 +46,7 @@ public class PropertyTeamMemberService {
         propertyTeamMemberRepository.deleteById(teamMemberUUID);
     }
 
-    public UUID createPropertyTeamMember(PropertyTeamMemberDTO dto){
+    public UUID createPropertyTeamMember(PropertyTeamMemberRequestDTO dto){
         Property property = propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
         PropertyTeamMember savedEntity = propertyTeamMemberRepository.save(dto.toEntity(property));
         return savedEntity.getId();

@@ -1,7 +1,9 @@
 package com.hostfully.bookingapi.controllers;
 
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
-import com.hostfully.bookingapi.models.dto.PropertyTeamMemberDTO;
+import com.hostfully.bookingapi.models.dto.request.create.PropertyTeamMemberRequestDTO;
+import com.hostfully.bookingapi.models.dto.request.update.PropertyTeamMemberUpdateRequestDTO;
+import com.hostfully.bookingapi.models.dto.response.PropertyTeamMemberResponseDTO;
 import com.hostfully.bookingapi.services.PropertyTeamMemberService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -20,22 +22,22 @@ public class PropertyTeamMemberController {
     PropertyTeamMemberService propertyTeamMemberService;
 
     @GetMapping("/detail/{teamMemberUUID}")
-    public ResponseEntity<ApiResponseDTO<PropertyTeamMemberDTO>> getTeamMember(@PathVariable UUID teamMemberUUID){
+    public ResponseEntity<ApiResponseDTO<PropertyTeamMemberResponseDTO>> getTeamMember(@PathVariable UUID teamMemberUUID){
         return ResponseEntity.ok(new ApiResponseDTO<>(propertyTeamMemberService.getTeamMember(teamMemberUUID)));
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponseDTO<ArrayList<PropertyTeamMemberDTO>>> getAllTeamMembers(){
+    public ResponseEntity<ApiResponseDTO<ArrayList<PropertyTeamMemberResponseDTO>>> getAllTeamMembers(){
         return ResponseEntity.ok(new ApiResponseDTO<>(propertyTeamMemberService.getAllTeamMembers()));
     }
 
     @PostMapping()
-    public ResponseEntity<ApiResponseDTO<UUID>> createPropertyTeamMembers(@RequestBody @Valid PropertyTeamMemberDTO propertyDTO){
+    public ResponseEntity<ApiResponseDTO<UUID>> createPropertyTeamMembers(@RequestBody @Valid PropertyTeamMemberRequestDTO propertyDTO){
         return ResponseEntity.ok(new ApiResponseDTO<>(propertyTeamMemberService.createPropertyTeamMember(propertyDTO)));
     }
 
     @PutMapping()
-    public ResponseEntity updatePropertyTeamMembers(@RequestBody @Valid PropertyTeamMemberDTO propertyDTO){
+    public ResponseEntity updatePropertyTeamMembers(@RequestBody @Valid PropertyTeamMemberUpdateRequestDTO propertyDTO){
         propertyTeamMemberService.updatePropertyTeamMember(propertyDTO);
         return ResponseEntity.ok().build();
     }

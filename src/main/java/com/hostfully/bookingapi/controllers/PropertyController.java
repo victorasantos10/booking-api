@@ -1,7 +1,9 @@
 package com.hostfully.bookingapi.controllers;
 
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
-import com.hostfully.bookingapi.models.dto.PropertyDTO;
+import com.hostfully.bookingapi.models.dto.request.create.PropertyRequestDTO;
+import com.hostfully.bookingapi.models.dto.request.update.PropertyUpdateRequestDTO;
+import com.hostfully.bookingapi.models.dto.response.PropertyResponseDTO;
 import com.hostfully.bookingapi.services.PropertyService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -23,22 +25,22 @@ public class PropertyController {
     PropertyService propertyService;
 
     @GetMapping("/detail/{propertyUUID}")
-    public ResponseEntity<ApiResponseDTO<PropertyDTO>> getProperty(@PathVariable UUID propertyUUID){
-        return ResponseEntity.ok(new ApiResponseDTO<>(propertyService.getPropertyById(propertyUUID).toDTO()));
+    public ResponseEntity<ApiResponseDTO<PropertyResponseDTO>> getProperty(@PathVariable UUID propertyUUID){
+        return ResponseEntity.ok(new ApiResponseDTO<>(propertyService.getPropertyById(propertyUUID)));
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponseDTO<ArrayList<PropertyDTO>>> getAllProperties(){
+    public ResponseEntity<ApiResponseDTO<ArrayList<PropertyResponseDTO>>> getAllProperties(){
         return ResponseEntity.ok(new ApiResponseDTO<>(propertyService.getAllProperties()));
     }
 
     @PostMapping()
-    public ResponseEntity<ApiResponseDTO<UUID>> createProperty(@RequestBody @Valid PropertyDTO propertyDTO){
+    public ResponseEntity<ApiResponseDTO<UUID>> createProperty(@RequestBody @Valid PropertyRequestDTO propertyDTO){
         return ResponseEntity.ok(new ApiResponseDTO<>(propertyService.createProperty(propertyDTO)));
     }
 
     @PutMapping()
-    public ResponseEntity updateProperty(@RequestBody @Valid PropertyDTO propertyDTO){
+    public ResponseEntity updateProperty(@RequestBody @Valid PropertyUpdateRequestDTO propertyDTO){
         propertyService.updateProperty(propertyDTO);
         return ResponseEntity.ok().build();
     }

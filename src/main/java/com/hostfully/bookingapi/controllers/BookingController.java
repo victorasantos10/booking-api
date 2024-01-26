@@ -1,7 +1,9 @@
 package com.hostfully.bookingapi.controllers;
 
 import com.hostfully.bookingapi.models.dto.ApiResponseDTO;
-import com.hostfully.bookingapi.models.dto.BookingDTO;
+import com.hostfully.bookingapi.models.dto.request.create.BookingRequestDTO;
+import com.hostfully.bookingapi.models.dto.request.update.BookingUpdateRequestDTO;
+import com.hostfully.bookingapi.models.dto.response.BookingResponseDTO;
 import com.hostfully.bookingapi.services.BookingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,22 +33,22 @@ public class BookingController {
 
     @Operation(summary = "Get a booking by ID")
     @RequestMapping(method = RequestMethod.GET, value = "/detail/{bookingUUID}")
-    public Object getBookingById(@PathVariable UUID bookingUUID){
-        return bookingService.getBooking(bookingUUID);
+    public ResponseEntity<ApiResponseDTO<BookingResponseDTO>> getBookingById(@PathVariable UUID bookingUUID){
+        return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.getBooking(bookingUUID)));
     }
 
     @Operation(summary = "Create a booking")
     @PostMapping()
-    public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody @Valid BookingDTO bookingDto){
-        validateDateRange(bookingDto.getStartDate(), bookingDto.getEndDate());
-        return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(bookingDto)));
+    public ResponseEntity<ApiResponseDTO<UUID>> addBooking(@RequestBody @Valid BookingRequestDTO bookingRequestDto){
+        validateDateRange(bookingRequestDto.getStartDate(), bookingRequestDto.getEndDate());
+        return ResponseEntity.ok(new ApiResponseDTO<>(bookingService.createBooking(bookingRequestDto)));
     }
 
     @Operation(summary = "Update a booking")
     @PutMapping()
-    public ResponseEntity updateBooking(@RequestBody @Valid BookingDTO bookingDto) {
-        validateDateRange(bookingDto.getStartDate(), bookingDto.getEndDate());
-        bookingService.updateBooking(bookingDto);
+    public ResponseEntity updateBooking(@RequestBody @Valid BookingUpdateRequestDTO bookingRequestDto) {
+        validateDateRange(bookingRequestDto.getStartDate(), bookingRequestDto.getEndDate());
+        bookingService.updateBooking(bookingRequestDto);
         return ResponseEntity.ok().build();
     }
 

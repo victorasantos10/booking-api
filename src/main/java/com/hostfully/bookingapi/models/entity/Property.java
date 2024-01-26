@@ -1,6 +1,6 @@
 package com.hostfully.bookingapi.models.entity;
 
-import com.hostfully.bookingapi.models.dto.PropertyDTO;
+import com.hostfully.bookingapi.models.dto.response.PropertyResponseDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,8 +20,8 @@ public class Property extends BaseEntity {
     public String name;
     public String address;
 
-    public PropertyDTO toDTO(){
-        PropertyDTO dto = new PropertyDTO();
+    public PropertyResponseDTO toDTO(){
+        PropertyResponseDTO dto = new PropertyResponseDTO();
 
         dto.setId(getId());
         dto.setName(getName());

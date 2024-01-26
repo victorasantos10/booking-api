@@ -1,6 +1,6 @@
 package com.hostfully.bookingapi.models.entity;
 
-import com.hostfully.bookingapi.models.dto.GuestDTO;
+import com.hostfully.bookingapi.models.dto.response.GuestResponseDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,8 +23,8 @@ public class Guest extends BaseEntity {
     private String email;
     private String phone;
 
-    public GuestDTO toDTO(){
-        GuestDTO dto = new GuestDTO();
+    public GuestResponseDTO toDTO(){
+        GuestResponseDTO dto = new GuestResponseDTO();
         dto.setId(getId());
         dto.setName(getName());
         dto.setDateOfBirth(getDateOfBirth());

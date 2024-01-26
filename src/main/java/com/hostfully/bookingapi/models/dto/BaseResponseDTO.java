@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class BaseDTO {
+public class BaseResponseDTO {
 
     @Schema(hidden = true)
     protected LocalDateTime createdDateTime;

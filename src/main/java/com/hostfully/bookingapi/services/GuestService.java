@@ -1,6 +1,8 @@
 package com.hostfully.bookingapi.services;
 
-import com.hostfully.bookingapi.models.dto.GuestDTO;
+import com.hostfully.bookingapi.models.dto.request.create.GuestRequestDTO;
+import com.hostfully.bookingapi.models.dto.request.update.GuestUpdateRequestDTO;
+import com.hostfully.bookingapi.models.dto.response.GuestResponseDTO;
 import com.hostfully.bookingapi.models.entity.Guest;
 import com.hostfully.bookingapi.repositories.GuestRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,15 +18,15 @@ public class GuestService {
     @Autowired
     GuestRepository guestRepository;
 
-    public GuestDTO getGuestById(UUID guestId){
+    public GuestResponseDTO getGuestById(UUID guestId){
         return guestRepository.findById(guestId).map(Guest::toDTO).orElseThrow(() -> new EntityNotFoundException("Guest not found"));
     }
 
-    public ArrayList<GuestDTO> getAllGuests(){
+    public ArrayList<GuestResponseDTO> getAllGuests(){
         return new ArrayList<>(guestRepository.findAll().stream().map(Guest::toDTO).toList());
     }
 
-    public void updateGuest(GuestDTO dto){
+    public void updateGuest(GuestUpdateRequestDTO dto){
         Guest guest = guestRepository.findById(dto.getId()).orElseThrow(() -> new EntityNotFoundException("Guest not found"));
         guestRepository.save(dto.toEntityUpdate(guest));
     }
@@ -34,7 +36,7 @@ public class GuestService {
         guestRepository.deleteById(guestId);
     }
 
-    public UUID createGuest(GuestDTO dto){
+    public UUID createGuest(GuestRequestDTO dto){
         Guest savedEntity = guestRepository.save(dto.toEntity());
         return savedEntity.getId();
     }

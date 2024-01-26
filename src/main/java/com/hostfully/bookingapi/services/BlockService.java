@@ -1,7 +1,9 @@
 package com.hostfully.bookingapi.services;
 
 import com.hostfully.bookingapi.enums.BookingStatus;
-import com.hostfully.bookingapi.models.dto.BlockDTO;
+import com.hostfully.bookingapi.models.dto.request.create.BlockRequestDTO;
+import com.hostfully.bookingapi.models.dto.request.update.BlockUpdateRequestDTO;
+import com.hostfully.bookingapi.models.dto.response.BlockResponseDTO;
 import com.hostfully.bookingapi.models.entity.Block;
 import com.hostfully.bookingapi.models.entity.Booking;
 import com.hostfully.bookingapi.models.entity.Property;
@@ -32,19 +34,18 @@ public class BlockService {
     @Autowired
     BookingRepository bookingRepository;
 
-    public BlockDTO getBlock(UUID blockUUID){
+    public BlockResponseDTO getBlock(UUID blockUUID){
         Block blockEntity = blockRepository.findById(blockUUID).orElseThrow(() -> new EntityNotFoundException("Block not found"));
 
         return blockEntity.toDTO();
     }
 
-    public void updateBlock(BlockDTO dto){
-        propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
+    public void updateBlock(BlockUpdateRequestDTO dto){
         Block blockEntity = blockRepository.findById(dto.getId()).orElseThrow(() -> new EntityNotFoundException("Block not found"));
         blockRepository.save(dto.toEntityUpdate(blockEntity));
     }
 
-    public UUID createBlock(UUID teamMemberUUID, BlockDTO dto){
+    public UUID createBlock(UUID teamMemberUUID, BlockRequestDTO dto){
         //Checking if property is valid.
         Property property = propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
         PropertyTeamMember propertyTeamMember = propertyTeamMemberRepository.findById(teamMemberUUID).orElseThrow(() -> new EntityNotFoundException("Team member not found"));

@@ -1,7 +1,7 @@
 package com.hostfully.bookingapi.models.entity;
 
 import com.hostfully.bookingapi.enums.TeamMemberType;
-import com.hostfully.bookingapi.models.dto.PropertyTeamMemberDTO;
+import com.hostfully.bookingapi.models.dto.response.PropertyTeamMemberResponseDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,8 +28,8 @@ public class PropertyTeamMember extends BaseEntity {
     private String name;
     private Integer type;
 
-    public PropertyTeamMemberDTO toDTO(){
-        PropertyTeamMemberDTO dto = new PropertyTeamMemberDTO();
+    public PropertyTeamMemberResponseDTO toDTO(){
+        PropertyTeamMemberResponseDTO dto = new PropertyTeamMemberResponseDTO();
 
         dto.setId(getId());
         dto.setPropertyId(getProperty().getId());

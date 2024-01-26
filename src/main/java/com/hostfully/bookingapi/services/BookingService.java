@@ -73,6 +73,7 @@ public class BookingService {
 
         validateBooking(datesOverlapping, booking.getGuestId(), blockOverlapping, true);
 
+        //In case user is trying to update a previous blocked, rebooked or cancelled booking to an active status (it should be rebooked)
         if(BookingStatus.valueOf(booking.getStatus()) != BookingStatus.ACTIVE && dto.getStatus() == BookingStatus.ACTIVE){
             throw new InvalidBookingOperation("A blocked, rebooked or cancelled booking can't be set to ACTIVE. Please set it to REBOOKED instead");
         }
@@ -86,11 +87,14 @@ public class BookingService {
             if(datesOverlapping.stream().anyMatch(item -> item.getGuestId().equals(guestId))){
                 // If it is an update operation and the user already have a booking in the same date, let him change the dates
                 if(isUpdate) return;
+                // If it is a create operation, it means that the user is trying to create a duplicate booking on the same date
                 throw new ExistingBookingException("You already have an existing booking for the same property in the same date");
             }
+            //In case user is trying to book in a date that has active bookings from other guests
             throw new OverlappingDatesException("The property isn't available at those dates. Please select another date range.");
         }
 
+        //In case user is trying to book in a date that has active blocks
         if(!blockOverlapping.isEmpty()){
             throw new ExistingBlockException("The property will be blocked in the selected dates. Reason: " + blockOverlapping.getFirst().getReason());
         }

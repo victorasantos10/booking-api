@@ -155,6 +155,35 @@ public class BookingServiceTest {
     }
 
     @Test
+    public void testCreateBookingWithOverlappingDatesForOtherGuest() {
+        BookingRequestDTO dto = new BookingRequestDTO();
+        UUID guestId = UUID.randomUUID();
+        dto.setGuestId(guestId);
+        dto.setPropertyId(UUID.randomUUID());
+        dto.setStartDate(LocalDate.now());
+        dto.setEndDate(LocalDate.now().plusDays(1));
+        dto.setStatus(BookingStatus.ACTIVE);
+        dto.setAdults(1);
+        dto.setChildren(0);
+
+        ArrayList<Booking> overlappingBookingsForOtherGuest = new ArrayList<>();
+        Booking overlapping = new Booking();
+        overlapping.setGuestId(UUID.randomUUID());
+
+        Guest currentGuest = new Guest();
+        currentGuest.setId(guestId);
+
+        overlappingBookingsForOtherGuest.add(overlapping);
+
+        when(propertyRepository.findById(dto.getPropertyId())).thenReturn(Optional.of(new Property()));
+        when(guestRepository.findById(dto.getGuestId())).thenReturn(Optional.of(currentGuest));
+        when(bookingRepository.findActiveOrRebookedBookingsWithinDate(dto.getPropertyId(), dto.getStartDate(), dto.getEndDate())).thenReturn(overlappingBookingsForOtherGuest);
+        when(blockRepository.findByPropertyIdAndIsActiveAndStartDateAndEndDate(dto.getPropertyId(), true, dto.getStartDate(), dto.getEndDate())).thenReturn(new ArrayList<>());
+
+        assertThrows(OverlappingDatesException.class, () -> bookingService.createBooking(dto));
+    }
+
+    @Test
     public void testUpdateBookingWithOverlappingDatesForSameGuest() {
         BookingUpdateRequestDTO dto = new BookingUpdateRequestDTO();
         UUID bookingId = UUID.randomUUID();

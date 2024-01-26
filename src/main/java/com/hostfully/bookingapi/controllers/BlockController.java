@@ -35,23 +35,23 @@ public class BlockController {
     PropertyTeamMemberService propertyTeamMemberService;
 
     @Operation(summary = "Get a block by ID", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
-    @GetMapping("{teamMemberUUID}/{blockUUID}")
-    public ResponseEntity<ApiResponseDTO<BlockResponseDTO>> getBlockById(@PathVariable UUID teamMemberUUID, @PathVariable UUID blockUUID){
+    @GetMapping("/{blockUUID}")
+    public ResponseEntity<ApiResponseDTO<BlockResponseDTO>> getBlockById(@RequestHeader(value = "X-TeamMemberUUID") UUID teamMemberUUID, @PathVariable UUID blockUUID){
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         return ResponseEntity.ok(new ApiResponseDTO<>(blockService.getBlock(blockUUID)));
     }
 
     @Operation(summary = "Create a new block for a property", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
-    @PostMapping("{teamMemberUUID}")
-    public ResponseEntity<ApiResponseDTO<UUID>> createBlock(@PathVariable UUID teamMemberUUID, @RequestBody @Valid BlockRequestDTO blockDTO){
+    @PostMapping
+    public ResponseEntity<ApiResponseDTO<UUID>> createBlock(@RequestHeader(value = "X-TeamMemberUUID") UUID teamMemberUUID, @RequestBody @Valid BlockRequestDTO blockDTO){
         validateDateRange(blockDTO.getStartDate(), blockDTO.getEndDate());
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         return ResponseEntity.ok(new ApiResponseDTO<>(blockService.createBlock(teamMemberUUID, blockDTO)));
     }
 
     @Operation(summary = "Update property block", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
-    @PutMapping("{teamMemberUUID}")
-    public ResponseEntity updateBlock(@PathVariable UUID teamMemberUUID, @RequestBody @Valid BlockUpdateRequestDTO blockDTO){
+    @PutMapping
+    public ResponseEntity updateBlock(@RequestHeader(value = "X-TeamMemberUUID") UUID teamMemberUUID, @RequestBody @Valid BlockUpdateRequestDTO blockDTO){
         validateDateRange(blockDTO.getStartDate(), blockDTO.getEndDate());
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         blockService.updateBlock(blockDTO);
@@ -59,8 +59,8 @@ public class BlockController {
     }
 
     @Operation(summary = "Delete a property block", description = "Note: Added teamMemberUUID on path to make endpoint available to be called only by team members (owners or managers).")
-    @DeleteMapping("{teamMemberUUID}/{blockUUID}")
-    public ResponseEntity deleteBlock(@PathVariable UUID teamMemberUUID, @PathVariable UUID blockUUID) {
+    @DeleteMapping("/{blockUUID}")
+    public ResponseEntity deleteBlock(@RequestHeader(value = "X-TeamMemberUUID") UUID teamMemberUUID, @PathVariable UUID blockUUID) {
         propertyTeamMemberService.validateTeamMember(teamMemberUUID);
         blockService.deleteBlock(blockUUID);
         return ResponseEntity.ok().build();

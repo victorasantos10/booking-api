@@ -28,12 +28,12 @@ public class BlockRequestDTO {
     @Size(max = 255, message = "Reason description too long")
     @NotBlank(message = "Field is mandatory")
     private String reason;
-    @Schema(example = "2024-01-01T00:00")
+    @Schema(example = "2024-12-01")
     @FutureOrPresent(message = "startDate cannot be in the past")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Field is mandatory")
     private LocalDate startDate;
-    @Schema(example = "2024-01-02T12:00")
+    @Schema(example = "2024-12-02")
     @FutureOrPresent(message = "endDate cannot be in the past")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Field is mandatory")

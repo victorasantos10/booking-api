@@ -25,10 +25,12 @@ public class BookingRequestDTO {
     @Schema(example = "91b23fb9-d079-40aa-84e5-4c438ce99411")
     @NotNull(message = "Field is mandatory")
     private UUID propertyId;
+    @Schema(example = "2024-12-01")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @FutureOrPresent(message = "startDate cannot be in the past")
     @NotNull(message = "Field is mandatory")
     private LocalDate startDate;
+    @Schema(example = "2024-12-02")
     @FutureOrPresent(message = "endDate cannot be in the past")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Field is mandatory")

@@ -67,8 +67,9 @@ public class BlockControllerTest {
         Mockito.doNothing().when(propertyTeamMemberService).validateTeamMember(teamMemberUUID);
         when(blockService.createBlock(teamMemberUUID, blockRequestDTO)).thenReturn(blockUUID);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/blocks/{teamMemberUUID}", teamMemberUUID)
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/blocks")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("X-TeamMemberUUID", teamMemberUUID)
                         .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(blockRequestDTO)))
                 .andExpect(status().isOk());
 
@@ -81,7 +82,8 @@ public class BlockControllerTest {
         Mockito.doNothing().when(propertyTeamMemberService).validateTeamMember(teamMemberUUID);
         Mockito.doNothing().when(blockService).updateBlock(blockUpdateRequestDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/blocks/{teamMemberUUID}", teamMemberUUID)
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/blocks")
+                        .header("X-TeamMemberUUID", teamMemberUUID)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(blockUpdateRequestDTO)))
                 .andExpect(status().isOk());
@@ -95,7 +97,8 @@ public class BlockControllerTest {
         Mockito.doNothing().when(propertyTeamMemberService).validateTeamMember(teamMemberUUID);
         Mockito.doNothing().when(blockService).deleteBlock(blockUUID);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/blocks/{teamMemberUUID}/{blockUUID}", teamMemberUUID, blockUUID)
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/blocks/{blockUUID}", blockUUID)
+                        .header("X-TeamMemberUUID", teamMemberUUID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -112,7 +115,8 @@ public class BlockControllerTest {
         doNothing().when(propertyTeamMemberService).validateTeamMember(any(UUID.class));
         when(blockService.getBlock(any(UUID.class))).thenReturn(blockResponseDTO);
 
-        mockMvc.perform(get("/api/blocks/{teamMemberUUID}/{blockUUID}", teamMemberUUID, blockUUID)
+        mockMvc.perform(get("/api/blocks/{blockUUID}", blockUUID)
+                        .header("X-TeamMemberUUID", teamMemberUUID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -124,7 +128,8 @@ public class BlockControllerTest {
 
         doThrow(new EntityNotFoundException("Team member not found")).when(propertyTeamMemberService).validateTeamMember(any(UUID.class));
 
-        mockMvc.perform(get("/api/blocks/{teamMemberUUID}/detail/{blockUUID}", teamMemberUUID, blockUUID)
+        mockMvc.perform(get("/api/blocks/detail/{blockUUID}", blockUUID)
+                        .header("X-TeamMemberUUID", teamMemberUUID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -137,7 +142,8 @@ public class BlockControllerTest {
         doNothing().when(propertyTeamMemberService).validateTeamMember(any(UUID.class));
         when(blockService.getBlock(any(UUID.class))).thenThrow(new EntityNotFoundException("Block not found"));
 
-        mockMvc.perform(get("/api/blocks/{teamMemberUUID}/detail/{blockUUID}", teamMemberUUID, blockUUID)
+        mockMvc.perform(get("/api/blocks/detail/{blockUUID}", blockUUID)
+                        .header("X-TeamMemberUUID", teamMemberUUID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }

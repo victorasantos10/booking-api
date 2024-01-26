@@ -1,7 +1,7 @@
 # Booking API
 A booking API to create reservations for guests in properties built in Java 21.
 
-##Requirements
+## Requirements
  - Java JDK 21
 
 ## Tools and frameworks used

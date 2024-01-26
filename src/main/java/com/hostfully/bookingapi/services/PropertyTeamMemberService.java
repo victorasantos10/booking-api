@@ -35,9 +35,9 @@ public class PropertyTeamMemberService {
     }
 
     public void updatePropertyTeamMember(PropertyTeamMemberDTO dto){
-        propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
+        Property property = propertyRepository.findById(dto.getPropertyId()).orElseThrow(() -> new EntityNotFoundException("Property not found"));
         PropertyTeamMember teamMember = propertyTeamMemberRepository.findById(dto.getId()).orElseThrow(() -> new EntityNotFoundException("Team member not found"));
-        propertyTeamMemberRepository.save(dto.toEntityUpdate(teamMember));
+        propertyTeamMemberRepository.save(dto.toEntityUpdate(teamMember, property));
     }
 
     public void deletePropertyTeamMember(UUID teamMemberUUID){

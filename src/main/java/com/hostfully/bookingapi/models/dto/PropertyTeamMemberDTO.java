@@ -36,7 +36,8 @@ public class PropertyTeamMemberDTO extends BaseDTO {
         return entity;
     }
 
-    public PropertyTeamMember toEntityUpdate(PropertyTeamMember entity) {
+    public PropertyTeamMember toEntityUpdate(PropertyTeamMember entity, Property property) {
+        entity.setProperty(property);
         entity.setName(getName() != null ? getName() : entity.getName());
         entity.setType(getType().getValue() != null ? getType().getValue() : entity.getType());
         entity.setUpdatedDateTime(LocalDateTime.now(ZoneOffset.UTC));

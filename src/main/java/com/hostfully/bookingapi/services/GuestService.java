@@ -29,8 +29,9 @@ public class GuestService {
         guestRepository.save(dto.toEntityUpdate(guest));
     }
 
-    public void deleteGuest(UUID propertyId){
-        guestRepository.deleteById(propertyId);
+    public void deleteGuest(UUID guestId){
+        guestRepository.findById(guestId).orElseThrow(() -> new EntityNotFoundException("Guest not found"));
+        guestRepository.deleteById(guestId);
     }
 
     public UUID createGuest(GuestDTO dto){

@@ -32,7 +32,7 @@ public class GuestDTO extends BaseDTO {
     @NotBlank(message = "Field is mandatory")
     private String email;
 
-    @Pattern(regexp = "[0-9]+", message = "Only numbers allowed")
+    @Pattern(regexp = "\\+[0-9]+", message = "Number should be formatted as +<phone_number>")
     @Schema(example = "+123456789", maxLength = 255)
     @NotBlank(message = "Field is mandatory")
     private String phone;

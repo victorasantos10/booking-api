@@ -1,5 +1,5 @@
 # Booking API
-A simple booking API to create reservations for guests in properties.
+A booking API to create reservations for guests in properties.
 
 ## Tools and frameworks used
 
@@ -14,7 +14,10 @@ A simple booking API to create reservations for guests in properties.
  - CRUD for Properties, Guests, Team members, Blocks and Bookings
  - Custom exception handling
  - Consistent response payload across all kinds of scenarios
- - Unit tests
+ - Unit tests with 100% coverage on all controllers, services and repositories
+  ![image](https://github.com/victorasantos10/booking-api/assets/8058097/94fd4016-fa85-4015-b9ae-807ae1fcfd71)
+  ![image](https://github.com/victorasantos10/booking-api/assets/8058097/fc2c3a94-5b2e-4a38-ac58-2345e64855cd)
+
  - Detailed description of the API on Swagger
 
 ## How to use
